@@ -1,0 +1,570 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ShoppingCart,
+  Star,
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/contexts/CartContext";
+import {
+  useWishlist,
+  useAddToWishlist,
+  useRemoveFromWishlist,
+} from "@/hooks/useWishlist";
+
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  comparePrice?: number;
+  sku: string;
+  quantity: number;
+  image: string;
+  images: string[];
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  averageRating: number;
+  reviewCount: number;
+  variants: any[];
+  brand?: {
+    id: string;
+    name: string;
+  };
+  attributes: any[];
+  tags?: string[];
+}
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+const Foods = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const router = useRouter();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { addToCart: addToGlobalCart } = useCart();
+  const { data: wishlist = [] } = useWishlist();
+  const addToWishlist = useAddToWishlist();
+  const removeFromWishlist = useRemoveFromWishlist();
+
+  const wishlistProductIds = new Set(wishlist.map((item) => item.productId));
+
+  const toggleWishlist = useCallback(
+    (productId: string) => {
+      setLoadingProductId(productId);
+      if (wishlistProductIds.has(productId)) {
+        removeFromWishlist.mutate(
+          { productId },
+          {
+            onSettled: () => setLoadingProductId(null),
+          },
+        );
+      } else {
+        addToWishlist.mutate(
+          { productId },
+          {
+            onSettled: () => setLoadingProductId(null),
+          },
+        );
+      }
+    },
+    [wishlistProductIds, addToWishlist, removeFromWishlist],
+  );
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStart === null) return;
+      const touchEnd = e.changedTouches[0].clientX;
+      const diff = touchStart - touchEnd;
+      const threshold = 50;
+      if (scrollContainerRef.current && Math.abs(diff) > threshold) {
+        const container = scrollContainerRef.current;
+        const scrollAmount = container.offsetWidth * 0.8;
+        container.scrollTo({
+          left:
+            container.scrollLeft + (diff > 0 ? scrollAmount : -scrollAmount),
+          behavior: "smooth",
+        });
+      }
+      setTouchStart(null);
+    },
+    [touchStart],
+  );
+
+  useEffect(() => {
+    const fetchFoodProducts = async () => {
+      try {
+        setLoading(true);
+        const API_BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
+
+        const productsResponse = await fetch(
+          `${API_BASE_URL}/api/v1/products?categorySlug=food&limit=8&isActive=true`,
+        );
+
+        if (productsResponse.ok) {
+          const productsData = await productsResponse.json();
+          if (productsData.success && productsData.data?.products) {
+            setProducts(productsData.data.products);
+          }
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFoodProducts();
+  }, []);
+
+  // Format price
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(price);
+  };
+
+  // Add to cart
+  const addToCart = (product: Product, quantity: number = 1) => {
+    // Add to global cart context
+    addToGlobalCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0] || product.image || "",
+      },
+      quantity,
+    );
+  };
+
+  // Update quantity
+  const updateQuantity = (productId: string, quantity: number) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: quantity,
+    }));
+  };
+
+  // Handle product click
+  const handleProductClick = (product: Product) => {
+    router.push(`/products/${product.category.slug.split("-")[0]}/${product.slug}`);
+  };
+
+  if (loading) {
+    return (
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+            <div className="mb-4 sm:mb-0 flex-1">
+              <div className="flex items-center justify-between mb-2">
+                <div className="h-10 w-32 bg-gray-200 animate-pulse rounded"></div>
+                <div className="h-6 w-20 bg-gray-200 animate-pulse rounded"></div>
+              </div>
+              <div className="h-6 w-64 bg-gray-200 animate-pulse rounded"></div>
+            </div>
+          </div>
+
+          <div className="flex overflow-x-auto scrollbar-hide pb-4 -mx-6 px-6 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-[80%] sm:w-[50%] md:w-[40%] lg:w-[calc((100%-72px)/4)]"
+              >
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                  <div className="h-48 md:h-64 bg-gray-200 animate-pulse"></div>
+                  <div className="p-4 bg-white">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="h-6 w-24 bg-gray-200 animate-pulse rounded"></div>
+                      <div className="h-4 w-16 bg-gray-200 animate-pulse rounded"></div>
+                    </div>
+                    <div className="h-5 w-full bg-gray-200 animate-pulse rounded mb-2"></div>
+                    <div className="h-10 w-full bg-gray-200 animate-pulse rounded-full mb-2"></div>
+                    <div className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="py-12 bg-white ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+          <div className="mb-4 sm:mb-0 flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-2xl md:text-4xl font-semibold text-gray-900 font-bricolage">
+                Foods
+              </h2>
+              <button
+                onClick={() => router.push("/products/foods")}
+                className="text-base md:text-lg text-[#EB6426] transition-colors duration-200 font-medium"
+              >
+                See all
+              </button>
+            </div>
+            <p className="text-lg text-gray-600">
+              Discover delicious and fresh food products
+            </p>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        {products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg font-">
+              No food products available at the moment.
+            </p>
+          </div>
+        ) : (
+          <motion.div
+            ref={scrollContainerRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex overflow-x-auto scrollbar-hide pb-4 -mx-6 px-6 gap-6"
+          >
+            {products.slice(0, 8).map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -2 }}
+                className="group cursor-pointer flex-shrink-0 w-[80%] sm:w-[50%] md:w-[40%] lg:w-[calc((100%-72px)/4)]"
+                onClick={() => handleProductClick(product)}
+              >
+                <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
+                  {/* Image Container with ProductImageSlider */}
+                  <div className="relative h-48 md:h-64 bg-white overflow-hidden">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(product.id);
+                      }}
+                      disabled={loadingProductId === product.id}
+                      className="absolute top-3 right-3 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors disabled:opacity-50"
+                      aria-label={
+                        wishlistProductIds.has(product.id)
+                          ? "Remove from wishlist"
+                          : "Add to wishlist"
+                      }
+                    >
+                      {loadingProductId === product.id ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <Heart
+                          className={`h-5 w-5 ${wishlistProductIds.has(product.id) ? "fill-current text-red-500" : "text-gray-600"}`}
+                        />
+                      )}
+                    </button>
+                    {product.images && product.images.length > 0 ? (
+                      <ProductImageSlider
+                        images={product.images}
+                        productName={product.name}
+                      />
+                    ) : product.image ? (
+                      // Fallback to single image if images array is empty but image exists
+                      <ProductImageSlider
+                        images={[product.image]}
+                        productName={product.name}
+                      />
+                    ) : (
+                      // Fallback when no image or image fails to load
+                      <div className="w-full h-full bg-gray-50 flex items-center justify-center">
+                        <div className="text-center">
+                          <p className="text-sm text-gray-500">
+                            No Image Available
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4 bg-white custom-font">
+                    {/* Price */}
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xl font-extrabold text-[#EB6426]">
+                          $
+                          {new Intl.NumberFormat("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(product.price)}
+                        </span>
+                        {product.comparePrice &&
+                          Number(product.comparePrice) >
+                            Number(product.price) && (
+                            <span className="text-sm text-gray-500 line-through">
+                              $
+                              {new Intl.NumberFormat("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }).format(Number(product.comparePrice))}
+                            </span>
+                          )}
+                      </div>
+                      {product.comparePrice &&
+                        Number(product.comparePrice) >
+                          Number(product.price) && (
+                          <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-medium">
+                            {Math.round(
+                              ((Number(product.comparePrice) -
+                                Number(product.price)) /
+                                Number(product.comparePrice)) *
+                                100,
+                            )}
+                            % OFF
+                          </span>
+                        )}
+                    </div>
+
+                    {/* Product Name */}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                      {product.name}
+                    </h3>
+
+                    {/* Add to Cart Button - Rounded */}
+                    <div className="mb-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product, quantities[product.id] || 1);
+                        }}
+                        disabled={product.quantity === 0}
+                        className="bg-[#EB6426] hover:bg-[#d65a1f] disabled:bg-gray-300 text-white py-2.5 px-12 rounded-full text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+                      >
+                        {product.quantity === 0 ? (
+                          "Out of Stock"
+                        ) : (
+                          <>
+                            <ShoppingCart className="h-4 w-4" />
+                            <span>Add to Cart</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center space-x-1">
+                      <div className="flex text-yellow-400">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${i < Math.floor(product.averageRating || 0) ? "fill-current" : "text-gray-300"}`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        ({product.reviewCount || 0})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Product Image Slider Component with seamless transitions
+function ProductImageSlider({
+  images,
+  productName,
+}: {
+  images: string[];
+  productName: string;
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  // Process images to handle both relative and absolute URLs
+  const processedImages = images.map((img) => {
+    if (img.startsWith("http")) {
+      return img; // Already a full URL
+    } else {
+      // Prepend API base URL for relative paths
+      const API_BASE_URL =
+        process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
+      return img.startsWith("/")
+        ? `${API_BASE_URL}${img}`
+        : `${API_BASE_URL}/${img}`;
+    }
+  });
+
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === images.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  // Check if screen is large enough for auto-scroll on hover
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024); // lg screen and above
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  // Auto-rotate when not hovered (or when hovered on large screens) with continuous flow
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    // Auto-rotate if:
+    // - On small screens and not hovered, OR
+    // - On large screens (auto-rotate even when hovered)
+    const shouldAutoRotate =
+      (!isLargeScreen && !isHovered) || (isLargeScreen && isHovered);
+
+    if (shouldAutoRotate && images.length > 1) {
+      // Set up a continuous rotation without waiting
+      interval = setInterval(() => {
+        goToNext();
+      }, 3000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isHovered, isLargeScreen, currentIndex, images.length]);
+
+  if (images.length === 0) {
+    return (
+      <div className="relative group overflow-hidden">
+        <img
+          src="/placeholder-image.jpg"
+          alt={productName || "Product placeholder"}
+          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="relative group overflow-hidden h-full w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Main Image with seamless Framer Motion animations */}
+      <div className="w-full h-full overflow-hidden">
+        <AnimatePresence initial={false} mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={processedImages[currentIndex]}
+            alt={`${productName} image ${currentIndex + 1}`}
+            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            whileHover={{ scale: 1.02 }}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/foods.png"; // fallback image
+            }}
+          />
+        </AnimatePresence>
+      </div>
+
+      {/* Navigation Arrows - Show on hover */}
+      {images.length > 1 && (
+        <>
+          <button
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrevious();
+            }}
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
+            aria-label="Next image"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </>
+      )}
+
+      {/* Indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 z-10">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 rounded-full ${index === currentIndex ? "bg-white" : "bg-white/50"}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide(index);
+              }}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Foods;

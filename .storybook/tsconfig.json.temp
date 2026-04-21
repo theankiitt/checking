@@ -1,0 +1,11 @@
+/// <reference types="@storybook/addon-webpack5-compiler-swc" />
+
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true
+  },
+  "include": ["*.ts", "*.tsx", ".storybook/**/*"]
+}

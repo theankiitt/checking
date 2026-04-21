@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+npm-debug.log*
+pnpm-debug.log*
+
+# Build output
+dist
+build
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Uploads directory (should not be copied to container)
+uploads
+
+# Test files
+coverage
+.nyc_output
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git
+.gitignore
+
+# Docker files (not needed in container)
+Dockerfile
+Dockerfile.dev
+.dockerignore
+
+# Prisma (will be generated)
+prisma/migrations

@@ -1,0 +1,61 @@
+# Dependencies - exclude built node_modules, they'll be reinstalled
+apps/*/node_modules
+packages/*/node_modules
+node_modules
+.pnpm-store
+
+# Build outputs - exclude existing builds
+apps/*/.next
+apps/*/dist
+apps/*/build
+packages/*/dist
+packages/*/build
+
+# Environment - exclude local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+pnpm-debug.log*
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE and temporary files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+
+# Testing and coverage
+coverage
+.coverage
+.nyc_output
+
+# Temporary files
+tmp
+temp
+
+# CI/CD
+.github
+
+# Cache
+.cache
+.eslintcache
+
+# Playwright
+test-results
+
+# Upload directories and logs
+apps/api/uploads
+apps/api/logs
+e2e/

@@ -20,7 +20,7 @@ export default function EmptyState({
           </h2>
         </div>
       </div>
-      <div className="text-center text-2xl py-12 text-gray-800">{message}</div>
+      <div className="text-center text-sm sm:text-base md:text-lg py-12 text-gray-800">{message}</div>
     </div>
   );
 }

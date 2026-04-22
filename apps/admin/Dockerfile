@@ -1,48 +1,42 @@
-FROM node:20 AS base
-
-# Install pnpm
+FROM node:20-alpine AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN apk add --no-cache libc6-compat
 
-# Dependencies
 FROM base AS deps
 WORKDIR /app
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY apps/admin/package.json ./apps/admin/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+RUN pnpm install --shamefully-hoist --frozen-lockfile
 
-COPY apps/admin/package.json ./package.json
-RUN pnpm install --no-frozen-lockfile
-
-# Builder
 FROM base AS builder
+ARG NEXT_PUBLIC_API_URL
 WORKDIR /app
-
 COPY --from=deps /app/node_modules ./node_modules
-COPY apps/admin/src ./src
-COPY apps/admin/public ./public
-COPY apps/admin/next.config.ts ./next.config.ts
-COPY apps/admin/tsconfig.json ./tsconfig.json
-COPY apps/admin/postcss.config.mjs ./postcss.config.mjs
-COPY apps/admin/package.json ./package.json
+COPY --from=deps /app/apps/admin/node_modules ./apps/admin/node_modules
+COPY apps/admin ./apps/admin/
+COPY packages/typescript-config ./packages/typescript-config/
 
-# Build the admin app
-RUN npx next build
+WORKDIR /app/apps/admin
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+RUN npx next build --webpack
 
-# Runner
 FROM base AS runner
 WORKDIR /app
-
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/admin/.next/standalone ./
+COPY --from=builder /app/apps/admin/.next/static ./.next/static
+COPY --from=builder /app/apps/admin/public ./public
+COPY --from=builder /app/node_modules ./node_modules
 
 USER nodejs
 
 EXPOSE 4001
-
-ENV PORT 4001
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=4001
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]

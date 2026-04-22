@@ -22,13 +22,13 @@ export default function PricingTab({ formData, onChange }: PricingTabProps) {
     country: "",
     currency: "USD",
     symbol: "$",
-    price: 0,
-    comparePrice: 0,
+    price: undefined,
+    comparePrice: undefined,
     isActive: true,
   });
 
   const handleAddCurrencyPrice = () => {
-    if (newCurrencyPrice.country && newCurrencyPrice.price > 0) {
+    if (newCurrencyPrice.country) {
       const updated = [
         ...currencyPrices,
         { ...newCurrencyPrice, id: Date.now().toString() },
@@ -39,8 +39,8 @@ export default function PricingTab({ formData, onChange }: PricingTabProps) {
         country: "",
         currency: "USD",
         symbol: "$",
-        price: 0,
-        comparePrice: 0,
+        price: undefined,
+        comparePrice: undefined,
         isActive: true,
       });
     }
@@ -135,14 +135,14 @@ export default function PricingTab({ formData, onChange }: PricingTabProps) {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price *
+                Price
               </label>
               <input
                 type="number"
                 step="0.01"
-                value={newCurrencyPrice.price}
+                value={newCurrencyPrice.price ?? ""}
                 onChange={(e) =>
-                  handleCurrencyChange("price", parseFloat(e.target.value) || 0)
+                  handleCurrencyChange("price", e.target.value ? parseFloat(e.target.value) : undefined)
                 }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-black"
                 placeholder="0.00"
@@ -238,7 +238,7 @@ export default function PricingTab({ formData, onChange }: PricingTabProps) {
                 </label>
                 <p className="text-sm font-semibold text-gray-900">
                   {cp.symbol}
-                  {cp.price.toFixed(2)}
+                  {cp.price != null ? cp.price.toFixed(2) : "Free"}
                 </p>
               </div>
               <div>

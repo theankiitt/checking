@@ -69,7 +69,7 @@ export interface CurrencyPrice {
   country: string;
   currency: string;
   symbol: string;
-  price: number;
+  price?: number;
   comparePrice?: number;
   minDeliveryDays?: number;
   maxDeliveryDays?: number;

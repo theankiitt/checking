@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { Home, ShoppingCart, Grid2x2, Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { manrope } from '@/app/fonts';
+import { useCart } from '@/contexts/CartContext';
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { cartItemCount } = useCart();
 
   const items = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/categories', label: 'Categories', icon: Grid2x2 },
-    { href: '/cart', label: 'Cart', icon: ShoppingCart, badge: 2 },
+    { href: '/cart', label: 'Cart', icon: ShoppingCart, badge: cartItemCount },
   ];
 
   return (

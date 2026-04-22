@@ -45,6 +45,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",
+    "prisma": "5.22.0",
     "redis": "^4.6.12",
     "sharp": "^0.33.0",
     "socket.io": "^4.8.3",
@@ -55,7 +56,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.6",
@@ -74,7 +74,6 @@
     "@typescript-eslint/parser": "^6.15.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
-    "prisma": "5.22.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
     "tsx": "^4.6.2",

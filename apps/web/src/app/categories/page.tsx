@@ -34,15 +34,14 @@ export default function CategoriesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6 custom-font">All Categories</h1>
-      {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {(loading || error) && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="h-28 bg-gray-100 rounded-lg animate-pulse" />
+            <div key={i} className="bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer border border-gray-200 rounded-2xl w-full h-40" />
           ))}
         </div>
-      ) : error ? (
-        <p className="text-red-600">{error}</p>
-      ) : (
+      )}
+      {!loading && !error && categories.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {categories.map((cat) => (
             <Link

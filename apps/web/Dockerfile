@@ -1,52 +1,46 @@
-FROM node:20 AS base
-
-# Install pnpm
+FROM node:20-alpine AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN apk add --no-cache libc6-compat
 
-# Dependencies
 FROM base AS deps
 WORKDIR /app
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY apps/web/package.json ./apps/web/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+RUN pnpm install --shamefully-hoist --frozen-lockfile
 
-COPY apps/web/package.json ./package.json
-RUN pnpm install --no-frozen-lockfile
-
-# Builder
 FROM base AS builder
+ARG NEXT_PUBLIC_API_URL
 WORKDIR /app
-
 COPY --from=deps /app/node_modules ./node_modules
-COPY apps/web/src ./src
-COPY apps/web/public ./public
-COPY apps/web/next.config.ts ./next.config.ts
-COPY apps/web/tsconfig.json ./tsconfig.json
-COPY apps/web/postcss.config.mjs ./postcss.config.mjs
-COPY apps/web/package.json ./package.json
-COPY prisma ./prisma/
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY apps/web ./apps/web/
+COPY packages/typescript-config ./packages/typescript-config/
+COPY apps/api/prisma ./prisma/
 
-# Generate Prisma Client (needed for auth.ts)
+WORKDIR /app/apps/web
+COPY apps/api/prisma ./prisma/
 RUN ./node_modules/.bin/prisma generate
+WORKDIR /app
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+RUN pnpm --filter web run build
 
-# Build the web app
-RUN npx next build
-
-# Runner
 FROM base AS runner
 WORKDIR /app
-
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
+COPY --from=builder /app/node_modules ./node_modules
 
 USER nodejs
 
 EXPOSE 4000
-
-ENV PORT 4000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=4000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]

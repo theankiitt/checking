@@ -34,8 +34,6 @@
  *                 enum: [viber, whatsapp]
  *               contactNumber:
  *                 type: string
- *               description:
- *                 type: string
  *     responses:
  *       201:
  *         description: Customization request submitted

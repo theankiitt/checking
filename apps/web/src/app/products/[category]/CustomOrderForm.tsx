@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, MessageCircle, Phone, ChevronDown } from "lucide-react";
+import { Send, MessageCircle, ChevronDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,7 +41,6 @@ export default function CustomOrderForm({ categorySlug }: { categorySlug?: strin
     },
   });
 
-  const selectedPlatform = watch("platform");
   const selectedCountryCode = watch("countryCode");
   const selectedCountry = COUNTRIES.find(c => c.code === selectedCountryCode) || COUNTRIES[0];
 
@@ -79,40 +78,13 @@ export default function CustomOrderForm({ categorySlug }: { categorySlug?: strin
           <Send className="w-6 h-6 text-white" />
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-1">Thank You!</h3>
-        <p className="text-gray-500 text-sm">We'll contact you soon on {selectedPlatform}.</p>
+        <p className="text-gray-500 text-sm">We'll contact you soon on WhatsApp.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => setValue("platform", "whatsapp")}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all ${
-            selectedPlatform === "whatsapp"
-              ? "bg-green-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          <MessageCircle className="w-5 h-5" />
-          WhatsApp
-        </button>
-        <button
-          type="button"
-          onClick={() => setValue("platform", "viber")}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all ${
-            selectedPlatform === "viber"
-              ? "bg-purple-600 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          <Phone className="w-5 h-5" />
-          Viber
-        </button>
-      </div>
-
       <div className="flex gap-2">
         <div className="relative">
           <button

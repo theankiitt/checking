@@ -46,7 +46,7 @@ export default function HandicraftSectionClient({
   if (!products || products.length === 0) {
     return (
       <section className="w-full bg-white py-8 md:py-12">
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
           <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 mb-2 ${manrope.className}`}>
             {title}
           </h2>
@@ -67,13 +67,13 @@ export default function HandicraftSectionClient({
 
   return (
     <section className="w-full bg-white py-8 md:py-12">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 ${manrope.className}`}>
+            <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 tracking-tight ${manrope.className}`}>
               {title}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">{subtitle}</p>
+            <p className="text-gray-800 text-md mt-1">{subtitle}</p>
           </div>
           <Link href="/products/handicraft" className="text-sm font-medium text-[#EB6426] hover:underline whitespace-nowrap">
             View More
@@ -107,19 +107,10 @@ export default function HandicraftSectionClient({
                   )}
                 </div>
                 <div className="p-3 flex flex-col flex-1">
-                  <h3 className="font-semibold text-gray-900 text-base tracking-tight truncate group-hover:text-[#EB6426] transition-colors">
+                  <h3 className="font-semibold text-gray-900 text-base tracking-tight  group-hover:text-[#EB6426] transition-colors">
                     {product.name}
                   </h3>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-xl text-[#EB6426] font-bold tracking-tight">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {/* {product.comparePrice && product.comparePrice > product.price && (
-                      <span className="text-xs text-gray-400 line-through">
-                        ${product.comparePrice.toFixed(2)}
-                      </span>
-                    )} */}
-                  </div>
+                 
                 </div>
               </Link>
             </motion.div>

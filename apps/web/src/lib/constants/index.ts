@@ -12,7 +12,7 @@ export const API_ENDPOINTS = {
 } as const;
 
 export const SITE_CONFIG = {
-  name: "GharSamma",
+  name: "Celebrate Multi Industries",
   tagline: "Authentic Nepali Handicrafts & Traditional Products",
   description:
     "Discover authentic Nepali handicrafts, puja samagri, musical instruments, herbs, and jewelry",

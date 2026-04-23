@@ -81,7 +81,7 @@ export function ImageUploader({
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
           disabled={isUploading}
         />
 

@@ -80,6 +80,7 @@ import {
   getBestSellerProducts,
   getNewArrivalProducts,
   getOnSaleProducts,
+  getTopProducts,
   getProductPricing,
   addPricingTier,
   updatePricingTier,
@@ -302,6 +303,11 @@ router.get(
   "/on-sale",
   cacheMiddleware({ ttl: 300 }),
   asyncHandler(getOnSaleProducts),
+);
+router.get(
+  "/top",
+  cacheMiddleware({ ttl: 300 }),
+  asyncHandler(getTopProducts),
 );
 router.get("/:id", cacheMiddleware({ ttl: 60 }), asyncHandler(getProduct));
 router.get(

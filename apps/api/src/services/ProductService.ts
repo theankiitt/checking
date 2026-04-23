@@ -35,7 +35,6 @@ export interface CreateProductInput {
   subCategoryId?: string;
   subSubCategoryId?: string;
   tags?: string[];
-  brandId?: string;
   notes?: string;
   currencyPrices?: CurrencyPriceInput[];
   seo?: {
@@ -230,6 +229,13 @@ export class ProductService {
     return {
       products: products.map((p) => ({
         ...p,
+        price: Number(p.price),
+        comparePrice: p.comparePrice ? Number(p.comparePrice) : null,
+        currencyPrices: p.currencyPrices.map((cp) => ({
+          ...cp,
+          price: Number(cp.price),
+          comparePrice: cp.comparePrice ? Number(cp.comparePrice) : null,
+        })),
         reviewCount: p._count.reviews,
         _count: undefined,
       })),
@@ -332,12 +338,36 @@ export class ProductService {
       images: processedImages,
     });
 
+    const subCategoryId = input.subCategoryId && input.subCategoryId.trim() !== "" ? input.subCategoryId : null;
+    const subSubCategoryId = input.subSubCategoryId && input.subSubCategoryId.trim() !== "" ? input.subSubCategoryId : null;
+
     logger.info("Creating product in database:", {
       name: input.name,
       slug,
       categoryId: input.categoryId,
+      subCategoryId,
       imageCount: processedImages.length,
     });
+
+    if (subCategoryId) {
+      const subCategory = await prisma.category.findUnique({
+        where: { id: subCategoryId },
+        select: { id: true },
+      });
+      if (!subCategory) {
+        throw new Error("SubCategory not found");
+      }
+    }
+
+    if (subSubCategoryId) {
+      const subSubCategory = await prisma.category.findUnique({
+        where: { id: subSubCategoryId },
+        select: { id: true },
+      });
+      if (!subSubCategory) {
+        throw new Error("SubSubCategory not found");
+      }
+    }
 
     try {
       const product = await prisma.product.create({
@@ -345,7 +375,7 @@ export class ProductService {
           name: input.name,
           slug,
           description: input.description,
-          price: input.price ?? input.currencyPrices?.[0]?.price ?? 0,
+          price: Number(input.price) || 0,
           comparePrice: input.comparePrice ?? input.currencyPrices?.[0]?.comparePrice ?? null,
           costPrice: input.costPrice ?? null,
           margin: input.margin ?? null,
@@ -366,10 +396,9 @@ export class ProductService {
           visibility: (input.visibility as any) || "VISIBLE",
           publishedAt: input.publishedAt ? new Date(input.publishedAt) : null,
           categoryId: input.categoryId,
-          subCategoryId: input.subCategoryId,
-          subSubCategoryId: input.subSubCategoryId,
+          subCategoryId,
+          subSubCategoryId,
           tags: input.tags || [],
-          brandId: input.brandId,
           notes: input.notes,
           ogImage: input.ogImage || input.seo?.ogImage || null,
           canonicalUrl: input.seo?.canonicalUrl || null,
@@ -433,6 +462,29 @@ export class ProductService {
       throw new Error("Product not found");
     }
 
+    const subCategoryId = input.subCategoryId && input.subCategoryId.trim() !== "" ? input.subCategoryId : null;
+    const subSubCategoryId = input.subSubCategoryId && input.subSubCategoryId.trim() !== "" ? input.subSubCategoryId : null;
+
+    if (subCategoryId) {
+      const subCategory = await prisma.category.findUnique({
+        where: { id: subCategoryId },
+        select: { id: true },
+      });
+      if (!subCategory) {
+        throw new Error("SubCategory not found");
+      }
+    }
+
+    if (subSubCategoryId) {
+      const subSubCategory = await prisma.category.findUnique({
+        where: { id: subSubCategoryId },
+        select: { id: true },
+      });
+      if (!subSubCategory) {
+        throw new Error("SubSubCategory not found");
+      }
+    }
+
     let slug = existing.slug;
 
     // If a custom slug is provided, use it
@@ -455,9 +507,12 @@ export class ProductService {
       }
     }
 
-const { currencyPrices, images, thumbnail, seo, ...rest } = input;
+const { currencyPrices, images, thumbnail, seo, subCategoryId: _, subSubCategoryId: __, ...rest } = input;
 
     const updateData: Record<string, unknown> = { ...rest, slug };
+
+    if (subCategoryId !== undefined) updateData.subCategoryId = subCategoryId;
+    if (subSubCategoryId !== undefined) updateData.subSubCategoryId = subSubCategoryId;
 
     if (updateData.price !== undefined) {
       delete updateData.price;

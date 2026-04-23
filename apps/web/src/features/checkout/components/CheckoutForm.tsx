@@ -35,7 +35,7 @@ const checkoutSchema = z.object({
   name: z.string().min(1, "Name is required"),
   whatsappNumber: z.string().min(1, "WhatsApp number is required"),
   email: z.string().email("Invalid email address"),
-  requirement: z.string().min(1, "Please describe your requirement"),
+  requirement: z.string().optional(),
 });
 
 type FormData = z.infer<typeof checkoutSchema>;
@@ -81,6 +81,16 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   const directProduct = productId ? { id: productId, quantity, variant } : null;
   const itemsToCheckout = directProduct ? [directProduct] : cartItems || [];
+
+  const getImageUrl = (url?: string) => {
+    if (!url) return null;
+    if (url.startsWith("http")) return url;
+    if (url.startsWith("/uploads/")) {
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5555";
+      return `${baseUrl}${url}`;
+    }
+    return url;
+  };
 
   useEffect(() => {
     if (isLoaded && !productId && itemsToCheckout.length === 0 && !submitted) {
@@ -277,7 +287,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Your Requirement *
+                      Your Requirement
                     </label>
                     <Controller
                       name="requirement"
@@ -286,7 +296,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                         <textarea
                           {...field}
                           rows={4}
-                          placeholder="Describe what you need..."
+                          placeholder="Describe what you need (optional)..."
                           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#EB6426] focus:border-transparent ${errors.requirement ? "border-red-500" : "border-gray-200"}`}
                         />
                       )}
@@ -329,13 +339,13 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
               <div className="space-y-4">
                 {itemsToCheckout.map((item: any) => (
                   <div key={item.id} className="flex items-center gap-4">
-                    <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="relative w-24 h-24 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
                       {item.image ? (
                         <Image
-                          src={item.image}
+                          src={getImageUrl(item.image) || "/product-placeholder.svg"}
                           alt={item.name}
                           fill
-                          className="object-cover"
+                          className="object-contain"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">

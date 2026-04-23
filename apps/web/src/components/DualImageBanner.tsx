@@ -11,6 +11,7 @@ export default function DualImageBanner() {
               src="/b1.jpg"
               alt="Banner 1"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               priority
             />
@@ -20,6 +21,7 @@ export default function DualImageBanner() {
               src="/b2.jpg"
               alt="Banner 2"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               priority
             />

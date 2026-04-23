@@ -140,7 +140,7 @@ function SearchBar({
               query.length >= 2 && results.length > 0 && setIsOpen(true)
             }
             placeholder={placeholder}
-            className={`w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl ${manrope.className} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-black text-sm sm:text-lg placeholder-gray-500 placeholder:font-medium ${inputClassName}`}
+            className={`w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl  focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-black text-sm sm:text-lg placeholder-gray-900 placeholder:font-medium ${inputClassName}`}
             aria-label="Search products"
             autoComplete="off"
           />

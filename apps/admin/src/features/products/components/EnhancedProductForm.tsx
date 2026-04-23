@@ -65,6 +65,7 @@ export default function EnhancedProductForm({
     if (initialData && initialData !== prevInitialDataRef.current) {
       setFormData(getInitialFormData(initialData));
       setSlugManuallyEdited(!!initialData.slug?.trim());
+      setActiveTab("identity");
     }
     prevInitialDataRef.current = initialData ?? null;
   }, [initialData]);

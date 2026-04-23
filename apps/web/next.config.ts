@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import WebpackObfuscator from "webpack-obfuscator";
 
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
@@ -11,6 +12,36 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   generateEtags: true,
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      config.plugins.push(
+        new WebpackObfuscator(
+          {
+            rotateStringArray: true,
+            stringArray: true,
+            stringArrayEncoding: ["rc4"],
+            stringArrayThreshold: 0.75,
+            controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 0.75,
+            deadCodeInjection: true,
+            deadCodeInjectionThreshold: 0.4,
+            debugProtection: false,
+            disableConsoleOutput: false,
+            identifierNamesGenerator: "hexadecimal",
+            log: false,
+            numbersToExpressions: true,
+            renameGlobals: false,
+            selfDefending: true,
+            simplify: true,
+            splitStrings: true,
+            splitStringsChunkLength: 5,
+          },
+          []
+        )
+      );
+    }
+    return config;
+  },
   images: {
     remotePatterns: [
       {
@@ -22,13 +53,19 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
-        port: "4444",
+        port: "5555",
         pathname: "/**",
       },
       {
         protocol: "http",
         hostname: "localhost",
         port: "5000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5555",
         pathname: "/uploads/**",
       },
       {

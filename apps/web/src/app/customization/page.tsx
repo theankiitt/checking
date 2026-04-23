@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Scissors, Loader2, Send, CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -27,10 +26,6 @@ const customizationTypes = [
 ];
 
 export default function CustomizationPage() {
-  const { data: session, status } = useSession() ?? {
-    data: null,
-    status: "loading",
-  };
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -49,12 +44,8 @@ export default function CustomizationPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${(session as any)?.accessToken || ""}`,
         },
-        body: JSON.stringify({
-          ...formData,
-          userEmail: session?.user?.email,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
@@ -71,14 +62,6 @@ export default function CustomizationPage() {
       setLoading(false);
     }
   };
-
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#EB6426]" />
-      </div>
-    );
-  }
 
   if (submitted) {
     return (

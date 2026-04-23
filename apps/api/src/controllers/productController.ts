@@ -263,6 +263,23 @@ export const getOnSaleProducts = async (req: Request, res: Response) => {
   });
 };
 
+export const getTopProducts = async (req: Request, res: Response) => {
+  const { limit = 4 } = req.query;
+  const validatedLimit = Math.min(Math.max(Number(limit) || 4, 1), 50);
+
+  const result = await productService.list({
+    limit: validatedLimit,
+    isActive: true,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+  });
+
+  res.json({
+    success: true,
+    data: result.products.slice(0, validatedLimit),
+  });
+};
+
 export const getProductPricing = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { quantity = 1, country } = req.query;

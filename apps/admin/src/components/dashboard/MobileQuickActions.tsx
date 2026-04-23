@@ -11,7 +11,6 @@ export function MobileQuickActions({ onNavigate }: MobileQuickActionsProps) {
     { id: "all-products", label: "Products" },
     { id: "all-orders", label: "Orders" },
     { id: "all-customers", label: "Customers" },
-    { id: "sales-analytics", label: "Analytics" },
   ];
 
   return (

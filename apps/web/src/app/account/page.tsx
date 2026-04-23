@@ -1,35 +1,11 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { User, Loader2, Package, Heart, Settings } from "lucide-react";
+import { User, Package, Heart, Settings } from "lucide-react";
 import Link from "next/link";
 
 export default function AccountPage() {
-  const { data: session, status } = useSession() ?? {
-    data: null,
-    status: "loading",
-  };
   const router = useRouter();
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login?callbackUrl=/account");
-    }
-  }, [status, router]);
-
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#EB6426]" />
-      </div>
-    );
-  }
-
-  if (!session) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -39,15 +15,11 @@ export default function AccountPage() {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-[#EB6426] text-white flex items-center justify-center font-bold text-2xl">
-              {session.user?.name?.charAt(0).toUpperCase() ||
-                session.user?.email?.charAt(0).toUpperCase() ||
-                "U"}
+              U
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                {session.user?.name || "User"}
-              </h2>
-              <p className="text-gray-600">{session.user?.email}</p>
+              <h2 className="text-xl font-semibold text-gray-900">User</h2>
+              <p className="text-gray-600">Welcome to your account</p>
             </div>
           </div>
         </div>

@@ -1,11 +1,9 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import { LocationProvider } from "@/contexts/LocationContext";
 import { CartProvider } from "@/contexts/CartContext";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
 
 interface ProvidersProps {
@@ -27,13 +25,9 @@ export default function Providers({ children }: ProvidersProps) {
     [],
   );
 
-  // Flatten provider tree by composing providers into a single component
-  // This reduces nesting and makes the tree easier to maintain
   const composedProviders = useMemo(
     () =>
       composeProviders([
-        SessionProvider,
-        AuthProvider,
         LocationProvider,
         CartProvider,
       ]),
@@ -75,10 +69,6 @@ export default function Providers({ children }: ProvidersProps) {
   );
 }
 
-/**
- * Helper function to compose multiple providers into a single component
- * Reduces nesting depth and improves readability
- */
 function composeProviders(
   providers: Array<React.ComponentType<{ children: React.ReactNode }>>,
 ): React.ComponentType<{ children: React.ReactNode }> {

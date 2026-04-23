@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/config/database";
 import { adminAuth } from "@/middleware/adminAuth";
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Get all configuration
 router.get("/", adminAuth, async (req, res) => {
@@ -362,22 +361,59 @@ router.get("/public/site-settings", async (req, res) => {
     const siteSettings = await prisma.systemConfig.findMany({
       where: {
         key: {
-          in: ["siteName", "siteLogo", "siteFavicon"],
+          in: [
+            "siteName",
+            "siteLogo",
+            "siteFavicon",
+            "email",
+            "phone",
+            "address",
+            "city",
+            "country",
+            "facebookUrl",
+            "instagramUrl",
+            "tiktokUrl",
+            "footerQuickLinks",
+            "socialLinks",
+            "footerDescription",
+          ],
         },
       },
     });
 
-    // Convert to key-value object
     const settings: Record<string, any> = {};
     siteSettings.forEach((config) => {
       settings[config.key] = config.value;
     });
 
-    // Set default values if not in database
+    const defaultQuickLinks = [
+      { label: "Home", href: "/" },
+      { label: "Products", href: "/products" },
+      { label: "Categories", href: "/categories" },
+      { label: "About Us", href: "/about" },
+      { label: "Contact", href: "/contact" },
+    ];
+
+    const defaultSocialLinks = [
+      { name: "Facebook", href: "https://www.facebook.com", icon: "facebook" },
+      { name: "Instagram", href: "https://www.instagram.com", icon: "instagram" },
+      { name: "TikTok", href: "https://www.tiktok.com", icon: "tiktok" },
+    ];
+
     const response = {
-      siteName: settings.siteName || "GharSamma",
+      siteName: settings.siteName || "Celebrate Multi Industries",
       siteLogo: settings.siteLogo || "/logo.png",
       siteFavicon: settings.siteFavicon || "/favicon.ico",
+      email: settings.email || "gharsamma6@gmail.com",
+      phone: settings.phone || "+977 123 456 7890",
+      address: settings.address || "Kathmandu, Nepal",
+      city: settings.city || "",
+      country: settings.country || "Nepal",
+      footerQuickLinks: settings.footerQuickLinks || defaultQuickLinks,
+      socialLinks: settings.socialLinks || defaultSocialLinks,
+      footerDescription:
+        settings.footerDescription ||
+        "Authentic Nepali handicrafts, traditional foods, and cultural products. We deliver the rich heritage of Nepal directly to your doorstep worldwide.",
     };
 
     res.json({
@@ -412,14 +448,6 @@ router.get("/site-settings", adminAuth, async (req, res) => {
             "address",
             "city",
             "country",
-            // Business Settings
-            "currency",
-            "timezone",
-            "language",
-            // Payment Settings
-            "paymentMethods",
-            "taxRate",
-            "shippingCost",
             // Appearance Settings
             "primaryColor",
             "secondaryColor",
@@ -436,6 +464,10 @@ router.get("/site-settings", adminAuth, async (req, res) => {
             "lowStockThreshold",
             "autoReorder",
             "trackInventory",
+            // Social Media Links
+            "facebookUrl",
+            "instagramUrl",
+            "tiktokUrl",
             // SEO Settings
             "seoTitle",
             "seoDescription",

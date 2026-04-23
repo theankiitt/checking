@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Product } from "@/shared/types";
 import { useCart } from "@/contexts/CartContext";
 import toast from "react-hot-toast";
@@ -33,9 +33,17 @@ export default function ProductDetailClient({ product, categorySlug, subcategory
 
   const { price, symbol } = getCurrencyPrice();
 
-  const handleAddToCart = () => {
-    if ((product.quantity ?? 0) <= 0) return;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const [showToggle, setShowToggle] = useState(false);
 
+  useEffect(() => {
+    if (descriptionRef.current) {
+      setShowToggle(descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight);
+    }
+  }, [product.description]);
+
+  const handleAddToCart = () => {
     setIsAdding(true);
 
     addToCart({
@@ -45,9 +53,9 @@ export default function ProductDetailClient({ product, categorySlug, subcategory
       image: product.images?.[0] || product.image || "/image.png",
     }, 1);
 
-    toast.success("Added to cart", {
+    toast.success("Product added to cart", {
       icon: "🛒",
-      duration: 2000,
+      duration: 2500,
     });
 
     setTimeout(() => setIsAdding(false), 1500);
@@ -74,41 +82,33 @@ export default function ProductDetailClient({ product, categorySlug, subcategory
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-              {product.category && (
-                <p className="text-gray-600 mt-2">Category: {product.category.name}</p>
-              )}
             </div>
 
             <div className="flex items-baseline gap-4">
-              <span className="text-4xl font-bold text-[#EB6426]">
-                {symbol}{Number(price).toFixed(2)}
-              </span>
-              {product.comparePrice && (
-                <span className="text-xl text-gray-400 line-through">
-                  {symbol}{product.comparePrice.toFixed(2)}
-                </span>
-              )}
             </div>
 
             {product.description && (
-              <div
-                className="prose max-w-none text-gray-700"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">Description</h2>
+                <div
+                  ref={descriptionRef}
+                  className={`prose max-w-none text-gray-700 ${!isExpanded ? 'line-clamp-6' : ''}`}
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+                {showToggle && (
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="text-[#EB6426] font-medium text-sm mt-2 hover:underline"
+                  >
+                    {isExpanded ? 'Show Less' : 'Show More'}
+                  </button>
+                )}
+              </div>
             )}
-
-            <div className="flex items-center gap-2">
-              <span className={`text-sm font-medium ${(product.quantity ?? 0) > 0 ? "text-green-600" : "text-red-600"}`}>
-                {(product.quantity ?? 0) > 0 ? "In Stock" : "Out of Stock"}
-              </span>
-              {(product.quantity ?? 0) > 0 && (
-                <span className="text-sm text-gray-500">({product.quantity} available)</span>
-              )}
-            </div>
 
             <button
               onClick={handleAddToCart}
-              disabled={(product.quantity ?? 0) <= 0 || isAdding}
+              disabled={isAdding}
               className="w-full bg-[#EB6426] text-white py-4 rounded-xl font-semibold hover:bg-[#d55a21] transition-all disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isAdding ? (
@@ -119,7 +119,7 @@ export default function ProductDetailClient({ product, categorySlug, subcategory
               ) : (
                 <>
                   <ShoppingCart className="w-5 h-5" />
-                  {(product.quantity ?? 0) > 0 ? "Add to Cart" : "Out of Stock"}
+                  Add to Cart
                 </>
               )}
             </button>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,10 +57,6 @@ const customOrderSchema = z
 type CustomOrderFormValues = z.infer<typeof customOrderSchema>;
 
 export default function CustomOrderPage() {
-  const { data: session, status } = useSession() ?? {
-    data: null,
-    status: "loading",
-  };
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -95,13 +90,8 @@ export default function CustomOrderPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${(session as any)?.accessToken || ""}`,
         },
-        body: JSON.stringify({
-          ...data,
-          userId: session?.user?.email ? undefined : (session as any)?.id,
-          userEmail: session?.user?.email,
-        }),
+        body: JSON.stringify(data),
       });
 
       const result = await res.json();
@@ -118,14 +108,6 @@ export default function CustomOrderPage() {
       setLoading(false);
     }
   };
-
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#EB6426]" />
-      </div>
-    );
-  }
 
   if (submitted) {
     return (

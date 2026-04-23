@@ -18,13 +18,11 @@ export const corsOptions = {
     // Also add common localhost IPs
     const allowedOrigins = [
       ...corsOrigins,
-      "http://localhost:3000",
-      "http://localhost:3001",
       "http://localhost:4000",
       "http://localhost:4001",
+      "http://localhost:4002",
+      "http://localhost:4004",
       "http://localhost:4444",
-      "http://127.0.0.1:4000",
-      "http://127.0.0.1:4001",
     ];
 
     // Allow requests with no origin (mobile apps, Postman, etc.)
@@ -117,6 +115,8 @@ export const helmetConfig = helmet({
         "'self'",
         "http://localhost:4000",
         "http://localhost:4001",
+        "http://localhost:4002",
+        "http://localhost:4004",
         "http://localhost:4444",
       ],
       fontSrc: ["'self'"],

@@ -234,12 +234,12 @@ export default function CategoryClient({
 
         {/* Products Section - Grouped by Subcategory */}
         {subcategoryProducts && subcategoryProducts.some((group) => group.products.length > 0) ? (
-          <div className="space-y-12">
+          <div className="space-y-12 w-full ">
             {subcategoryProducts
               .filter((group) => group.products.length > 0)
               .map((group) => (
                 <div key={group.category.id}>
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between mb-6 ">
                     <h2 className="text-2xl font-bold text-gray-900">{group.category.name}</h2>
                     <Link href={`/products/${categorySlug}/${group.category.slug}`} className="text-sm font-semibold tracking-tight text-[#EB6426] hover:underline flex items-center gap-1">
                       View All
@@ -248,14 +248,13 @@ export default function CategoryClient({
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                     {group.products.map((product) => (
                       <ProductCard key={product.id} product={product} />
-                    ))}op
+                    ))}
                   </div>
                 </div>
               ))}
           </div>
         ) : subCategories.length > 0 ? (
           <div className="bg-white rounded-xl p-12 text-center">
-            <div className="text-6xl mb-4">📦</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               No products available yet
             </h3>
@@ -334,20 +333,39 @@ export default function CategoryClient({
 
         {/* Custom Order Section */}
         <div className="mt-16 max-w-[88rem]">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-            <div className="flex flex-col lg:flex-row">
-              <div className="lg:w-1/2 p-8 lg:p-12">
-                <h2 className={`text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight mb-3 ${manrope.className}`}>
-                  Customize Your Order
-                </h2>
-                <p className="text-gray-900 mb-8 tracking-tight">
-                  Can't find what you're looking for? Share your WhatsApp or Viber contact and we'll reach out to help you customize your order.
-                </p>
-                <Suspense fallback={<CustomOrderFallback />}>
-                  <CustomOrderForm categorySlug={categorySlug} />
-                </Suspense>
+          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-8 lg:p-12">
+            <div className="text-center mb-8">
+              <h2 className={`text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight mb-3 ${manrope.className}`}>
+                Customize Your Order
+              </h2>
+              <p className="text-gray-600 tracking-tight max-w-2xl mx-auto">
+                Can't find what you're looking for? Share your requirements and we'll help you customize your order.
+              </p>
+            </div>
+
+            <div className="max-w-lg mx-auto">
+              <Suspense fallback={<CustomOrderFallback />}>
+                <CustomOrderForm categorySlug={categorySlug} />
+              </Suspense>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">or</span>
+                </div>
               </div>
-             
+
+              <a
+                href="https://wa.me/9779814768889?text=Hi!%20I'm%20interested%20in%20customizing%20an%20order."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-3 bg-[#EB6426] text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-[#d55a21] transition-colors shadow-md hover:shadow-lg"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Chat on WhatsApp
+              </a>
             </div>
           </div>
         </div>

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 4001",
-    "build": "next build",
-    "start": "next start -p 4001",
+    "dev": "next dev --turbopack -p 4004",
+    "build": "next build --webpack",
+    "start": "next start -p 4004",
     "lint": "eslint"
   },
   "dependencies": {
@@ -13,7 +13,6 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^5.2.2",
-    "react-hook-form": "^7.62.0",
     "@lexical/code": "^0.38.1",
     "@lexical/headless": "^0.38.1",
     "@lexical/html": "^0.38.1",
@@ -44,6 +43,7 @@
     "quill": "^2.0.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.6.0",
     "react-redux": "^9.2.0",
     "recharts": "^3.6.0",
@@ -58,9 +58,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "javascript-obfuscator": "^5.4.1",
     "jest": "^30.3.0",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.6",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webpack-obfuscator": "^3.6.1"
   }
 }

@@ -56,27 +56,37 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const {
       medium,
+      platform,
       contactNumber,
+      phoneNumber,
+      countryCode,
       description,
       userEmail,
     } = req.body;
 
-    if (!contactNumber) {
+    const finalMedium = medium || platform || "whatsapp";
+    const finalContactNumber = contactNumber || phoneNumber || "";
+
+    if (!finalContactNumber) {
       throw new AppError("Contact number is required", 400);
     }
 
-    if (!medium || !["viber", "whatsapp"].includes(medium.toLowerCase())) {
+    if (!finalMedium || !["viber", "whatsapp"].includes(finalMedium.toLowerCase())) {
       throw new AppError("Medium must be either 'viber' or 'whatsapp'", 400);
     }
+
+    const fullPhoneNumber = countryCode ? `${countryCode}${finalContactNumber}` : finalContactNumber;
 
     const customizationRequest = await prisma.customizationRequest.create({
       data: {
         userId: req.user?.id || null,
         userEmail: req.user?.email || userEmail || null,
-        customizationType: medium.toLowerCase(),
-        description: description || null,
-        contactMethod: medium.toLowerCase(),
-        phone: contactNumber,
+        category: "General",
+        customizationType: finalMedium.toLowerCase(),
+        productName: "Custom Order",
+        description: description || "No description provided",
+        contactMethod: finalMedium.toLowerCase(),
+        phone: fullPhoneNumber,
         status: "PENDING",
       },
     });

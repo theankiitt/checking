@@ -8,12 +8,10 @@ import {
   X,
   ChevronRight,
   ChevronLeft,
-  User,
   ShoppingCart,
 } from "lucide-react";
 import SearchBar from "../SearchBar";
 import { NavItem, SiteSettings } from "./types";
-import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 
 interface MobileMenuProps {
@@ -30,7 +28,6 @@ export function MobileMenu({
   siteSettings,
 }: MobileMenuProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const { openAuthModal } = useAuth();
   const { cartItemCount } = useCart();
 
   const handleClose = () => {
@@ -57,20 +54,13 @@ export function MobileMenu({
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
           >
-            <div className="sticky top-0 bg-gradient-to-r from-[#EB6426] to-[#4a1f18]">
+            <div className="sticky top-0 bg-[#EB6426]">
               <div className="px-4 py-3 flex items-center justify-between border-b border-white/20">
                 <Link
                   href="/"
                   className="flex items-center flex-shrink-0"
                   onClick={handleClose}
                 >
-                  {siteSettings.siteLogo && (
-                    <img
-                      src={siteSettings.siteLogo}
-                      alt={siteSettings.siteName}
-                      className="h-10 w-auto object-contain"
-                    />
-                  )}
                   <img
                     src="/main.png"
                     alt="GharSamma Logo"
@@ -90,15 +80,7 @@ export function MobileMenu({
                       </span>
                     )}
                   </Link>
-                  <button
-                    onClick={() => {
-                      handleClose();
-                      openAuthModal();
-                    }}
-                    className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors"
-                  >
-                    <User className="w-5 h-5" />
-                  </button>
+                 
                 </div>
               </div>
               <div className="px-4 py-3 flex items-center justify-between">

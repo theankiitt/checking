@@ -1,12 +1,10 @@
 export * from "./FormFields";
 export * from "./GeneralSettings";
 export * from "./ContactSettings";
-export * from "./BusinessSettings";
-export * from "./PaymentSettings";
+export { default as SocialSettings } from "./SocialSettings";
 export * from "./NotificationSettings";
 export * from "./SecuritySettings";
 export * from "./InventorySettings";
-export * from "./VariantSettings";
 export * from "./SeoSettings";
 export * from "./AnalyticsSettings";
 export * from "./Skeleton";

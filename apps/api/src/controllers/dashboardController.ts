@@ -271,3 +271,148 @@ export const getChartData = async (req: Request, res: Response) => {
     throw new AppError("Failed to fetch chart data", 500);
   }
 };
+
+export const getSalesChartData = async (req: Request, res: Response) => {
+  try {
+    const { period = "14" } = req.query;
+    const days = parseInt(period as string) || 14;
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
+    const orders = await prisma.order.findMany({
+      where: {
+        createdAt: { gte: startDate },
+        paymentStatus: "PAID",
+      },
+      select: {
+        createdAt: true,
+        totalAmount: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const ordersByDay = orders.reduce((acc: Record<string, number>, order) => {
+      const date = order.createdAt.toISOString().split("T")[0];
+      acc[date] = (acc[date] || 0) + Number(order.totalAmount);
+      return acc;
+    }, {});
+
+    const chartData = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split("T")[0];
+      chartData.push({
+        date: dateStr,
+        sales: ordersByDay[dateStr] || 0,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: chartData,
+    });
+  } catch (error) {
+    logger.error("Get sales chart data error:", error);
+    throw new AppError("Failed to fetch sales chart data", 500);
+  }
+};
+
+export const getRevenueChartData = async (req: Request, res: Response) => {
+  try {
+    const { period = "14" } = req.query;
+    const days = parseInt(period as string) || 14;
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
+    const orders = await prisma.order.findMany({
+      where: {
+        createdAt: { gte: startDate },
+        paymentStatus: "PAID",
+      },
+      select: {
+        createdAt: true,
+        totalAmount: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const revenueByDay = orders.reduce(
+      (acc: Record<string, number>, order) => {
+        const date = order.createdAt.toISOString().split("T")[0];
+        acc[date] = (acc[date] || 0) + Number(order.totalAmount);
+        return acc;
+      },
+      {},
+    );
+
+    const chartData = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split("T")[0];
+      chartData.push({
+        date: dateStr,
+        revenue: revenueByDay[dateStr] || 0,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: chartData,
+    });
+  } catch (error) {
+    logger.error("Get revenue chart data error:", error);
+    throw new AppError("Failed to fetch revenue chart data", 500);
+  }
+};
+
+export const getOrdersChartData = async (req: Request, res: Response) => {
+  try {
+    const { period = "14" } = req.query;
+    const days = parseInt(period as string) || 14;
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
+    const orders = await prisma.order.findMany({
+      where: {
+        createdAt: { gte: startDate },
+      },
+      select: {
+        createdAt: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const ordersByDay = orders.reduce(
+      (acc: Record<string, number>, order) => {
+        const date = order.createdAt.toISOString().split("T")[0];
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
+
+    const chartData = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split("T")[0];
+      chartData.push({
+        date: dateStr,
+        orders: ordersByDay[dateStr] || 0,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: chartData,
+    });
+  } catch (error) {
+    logger.error("Get orders chart data error:", error);
+    throw new AppError("Failed to fetch orders chart data", 500);
+  }
+};

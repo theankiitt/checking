@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -59,33 +58,17 @@ const statusColors: Record<string, string> = {
 };
 
 export default function OrdersPage() {
-  const { data: session, status } = useSession() ?? {
-    data: null,
-    status: "loading",
-  };
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login?callbackUrl=/orders");
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    if (session?.user) {
-      fetchOrders();
-    }
-  }, [session]);
+    fetchOrders();
+  }, []);
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/v1/orders/my-orders`, {
-        headers: {
-          Authorization: `Bearer ${(session as any)?.accessToken || ""}`,
-        },
-      });
+      const res = await fetch(`${API_BASE_URL}/api/v1/orders/my-orders`);
 
       if (res.ok) {
         const data = await res.json();
@@ -97,16 +80,12 @@ export default function OrdersPage() {
     }
   };
 
-  if (status === "loading" || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-[#EB6426]" />
       </div>
     );
-  }
-
-  if (!session) {
-    return null;
   }
 
   return (

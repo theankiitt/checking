@@ -23,7 +23,6 @@ const ROUTE_MAP: Record<string, string> = {
   media: "/dashboard/media",
   about: "/dashboard/about",
   sliders: "/dashboard/sliders",
-  "sales-analytics": "/dashboard/sales-analytics",
   "website-analytics": "/dashboard/website-analytics",
   "google-analytics": "/dashboard/google-analytics",
   "facebook-pixel": "/dashboard/facebook-pixel",
@@ -188,14 +187,9 @@ function SidebarContainer({
 function SidebarHeader({ onClose }: { onClose: () => void }) {
   return (
     <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0">
-      <div className="flex items-center space-x-3">
-        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-lg">G</span>
-        </div>
-        <span className="text-2xl font-bold text-black title-regular">
-          Admin
-        </span>
-      </div>
+      <span className="text-2xl font-bold text-black title-regular">
+        Admin
+      </span>
       <button
         onClick={onClose}
         className="lg:hidden p-2 rounded-md text-black hover:text-black hover:bg-gray-100 transition-colors"

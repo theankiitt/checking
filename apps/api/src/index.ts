@@ -48,10 +48,10 @@ import addressRoutes from "@/routes/addresses";
 import reviewRoutes from "@/routes/reviews";
 import userRoutes from "@/routes/users";
 import { swaggerRouter } from "@/config/swagger";
-import splashScreenRoutes from "@/routes/splashScreen";
 import analyticsRoutes from "@/routes/analytics";
 import dashboardRoutes from "@/routes/dashboard";
 import notificationRoutes from "@/routes/notifications";
+import staticPagesRoutes from "@/routes/staticPages";
 // Import environment config
 import { env } from "@/config/env";
 import { initRedis, closeRedis } from "@/config/redis";
@@ -188,7 +188,7 @@ app.use("/api/v1/contacts", asRouter(contactRoutes));
 app.use("/api/v1/analytics", asRouter(analyticsRoutes));
 app.use("/api/v1/dashboard", asRouter(dashboardRoutes));
 app.use("/api/v1/notifications", asRouter(notificationRoutes));
-app.use("/api/v1", asRouter(splashScreenRoutes));
+app.use("/api/v1/pages", asRouter(staticPagesRoutes));
 
 // 404 handler
 app.use(notFoundHandler);

@@ -292,7 +292,10 @@ export const createProductSchema = productBaseSchema
           country: z.string().min(1, "Country is required").default("USA"),
           currency: z.string().min(1, "Currency is required").default("USD"),
           symbol: z.string().min(1, "Symbol is required").default("$"),
-          price: z.coerce.number().min(0, "Price must be 0 or greater").default(0),
+          price: z.preprocess((val) => {
+            if (val === "" || val === null || val === undefined) return 0;
+            return Number(val);
+          }, z.number().min(0, "Price must be 0 or greater")),
           comparePrice: z.coerce
             .number()
             .min(0, "Compare price must be non-negative")

@@ -5,14 +5,13 @@ import { motion } from "framer-motion";
 import {
   Settings,
   Save,
-  Database,
-  CreditCard,
   Shield,
   Bell,
   Package,
   Search,
   BarChart3,
   Mail,
+  Share2,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -23,15 +22,14 @@ import { TabKey } from "./types";
 import {
   GeneralSettings,
   ContactSettings,
-  BusinessSettings,
-  PaymentSettings,
+  SocialSettings,
   NotificationSettings,
   SecuritySettings,
   InventorySettings,
-  VariantSettings,
   SeoSettings,
   SkeletonSettings,
 } from "./components";
+import { manrope } from "@/lib/fonts";
 
 const AnalyticsSettings = lazy(() =>
   import("./components/AnalyticsSettings").then((mod) => ({
@@ -42,12 +40,10 @@ const AnalyticsSettings = lazy(() =>
 const TAB_DESCRIPTIONS: Record<TabKey, string> = {
   general: "Configure basic site information and branding",
   contact: "Manage contact details and location information",
-  business: "Set up business operations and regional settings",
-  payment: "Configure payment methods and pricing",
+  social: "Configure social media links and profiles",
   notifications: "Manage notification preferences",
   security: "Configure security settings and authentication",
   inventory: "Set up inventory management preferences",
-  "variant-management": "Manage product variant settings and options",
   seo: "Optimize search engine visibility and metadata",
   analytics: "Configure analytics and conversion tracking",
 };
@@ -55,8 +51,7 @@ const TAB_DESCRIPTIONS: Record<TabKey, string> = {
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Settings,
   Mail,
-  Database,
-  CreditCard,
+  Share2,
   Bell,
   Shield,
   Package,
@@ -72,6 +67,7 @@ export default function SettingsPage() {
     isSaving,
     isUploading,
     error,
+    updateSettings,
     saveSettings,
     uploadMedia,
     refetch,
@@ -100,7 +96,9 @@ export default function SettingsPage() {
     [uploadMedia],
   );
 
-  const handleChange = useCallback((field: string, value: any) => {}, []);
+  const handleChange = useCallback((field: string, value: any) => {
+    updateSettings({ [field]: value });
+  }, [updateSettings]);
 
   const handleCancel = useCallback(() => {
     refetch();
@@ -130,18 +128,14 @@ export default function SettingsPage() {
         );
       case "contact":
         return <ContactSettings {...props} />;
-      case "business":
-        return <BusinessSettings {...props} />;
-      case "payment":
-        return <PaymentSettings {...props} />;
+      case "social":
+        return <SocialSettings {...props} />;
       case "notifications":
         return <NotificationSettings {...props} />;
       case "security":
         return <SecuritySettings {...props} />;
       case "inventory":
         return <InventorySettings {...props} />;
-      case "variant-management":
-        return <VariantSettings {...props} />;
       case "seo":
         return <SeoSettings {...props} />;
       case "analytics":
@@ -168,10 +162,10 @@ export default function SettingsPage() {
             </>
           ) : (
             <>
-              <h1 className="text-3xl font-bold custom-font text-gray-900 mb-2">
+              <h1 className={`text-3xl font-bold tracking-tight  text-gray-900 mb-2 ${manrope.className}`}>
                 Site Settings
               </h1>
-              <p className="text-gray-600 custom-font">
+              <p className="text-gray-600 text-lg">
                 Manage your site settings, appearance, and configurations
               </p>
             </>
@@ -207,7 +201,7 @@ export default function SettingsPage() {
                       <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
-                        className={`w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-left transition-all duration-200 text-sm font-medium custom-font ${
+                        className={`w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-left transition-all duration-200 text-md font-bold ${manrope.className} ${
                           activeTab === tab.key
                             ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
                             : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent"
@@ -233,7 +227,7 @@ export default function SettingsPage() {
                   </>
                 ) : (
                   <>
-                    <h2 className="text-lg font-semibold custom-font text-gray-900">
+                    <h2 className={`text-lg font-semibold text-xl  text-black ${manrope.className}`}>
                       {TABS.find((tab) => tab.key === activeTab)?.label ||
                         "Settings"}
                     </h2>

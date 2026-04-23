@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { manrope } from '../fonts';
 
 interface Category {
   id: string;
@@ -19,7 +20,9 @@ export default function CategoriesPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/v1/categories`);
+        const res = await fetch(`${API_BASE_URL}/api/v1/categories?includeInactive=false`, {
+          next: { revalidate: 3600 },
+        });
         const data = await res.json();
         setCategories(data?.data?.categories || []);
       } catch (e: any) {
@@ -33,7 +36,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 custom-font">All Categories</h1>
+      <h1 className={`text-3xl font-bold tracking-tight text-gray-900 mb-6 ${manrope.className}`}>All Categories</h1>
       {(loading || error) && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {Array.from({ length: 12 }).map((_, i) => (

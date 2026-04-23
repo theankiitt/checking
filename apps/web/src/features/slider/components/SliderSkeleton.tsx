@@ -10,7 +10,7 @@ export default function SliderSkeleton({ className }: SliderSkeletonProps) {
   return (
     <div
       className={cn(
-        "relative max-w-[88rem] mx-auto px-4 md:px-6 lg:px-8 mt-4 h-[200px] md:h-[300px] lg:h-[400px] xl:h-[450px] rounded-xl bg-gray-200 overflow-hidden",
+        "relative max-w-[88rem] mx-4 md:mx-auto px-0 md:px-6 lg:px-8 mt-4 h-[200px] md:h-[300px] lg:h-[400px] xl:h-[450px] rounded-xl bg-gray-200 overflow-hidden",
         className,
       )}
       role="status"

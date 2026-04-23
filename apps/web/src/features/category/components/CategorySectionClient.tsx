@@ -126,7 +126,7 @@ export default memo(function CategorySectionClient({
 
   return (
     <div
-      className="container max-w-[88rem] mx-auto px-4 mt-12"
+      className="container max-w-[88rem] mx-auto px-4 mt-10 md:mt-12"
       role="region"
       aria-label="Categories"
     >

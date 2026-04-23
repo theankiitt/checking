@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Manrope, Public_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Manrope, Oswald, Public_Sans, Work_Sans } from "next/font/google";
 
 export const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -15,7 +15,7 @@ export const public_sans = Public_Sans({
   preload: true,
 });
 
-export const manrope = Manrope({
+export const manrope = Work_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",

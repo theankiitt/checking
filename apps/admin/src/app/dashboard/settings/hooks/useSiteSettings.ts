@@ -140,7 +140,7 @@ export function useSiteSettings() {
     [uploadMutation],
   );
 
-  const settings = serverSettings || getDefaultSettings();
+  const settings = { ...getDefaultSettings(), ...serverSettings };
   const isUploading = uploadMutation.isPending;
   const isSaving = saveMutation.isPending;
   const saveError = saveMutation.error?.message || null;
@@ -170,12 +170,6 @@ function getDefaultSettings(): SiteSettings {
     address: "Thamel, Kathmandu",
     city: "Kathmandu",
     country: "Nepal",
-    currency: "NPR",
-    timezone: "Asia/Kathmandu",
-    language: "en",
-    paymentMethods: ["cash", "card", "bank_transfer", "esewa", "khalti"],
-    taxRate: 13,
-    shippingCost: 100,
     primaryColor: "#3B82F6",
     secondaryColor: "#10B981",
     theme: "light",
@@ -188,13 +182,9 @@ function getDefaultSettings(): SiteSettings {
     lowStockThreshold: 10,
     autoReorder: false,
     trackInventory: true,
-    defaultVariantImageWidth: 500,
-    defaultVariantImageHeight: 500,
-    variantAutoGeneration: false,
-    allowVariantCombinations: true,
-    showOutOfStockVariants: false,
-    variantFallbackEnabled: true,
-    variantAttributeTypes: "Color,Size,Material,Package,Units",
+    facebookUrl: "",
+    instagramUrl: "",
+    tiktokUrl: "",
     seoTitle: "Gharsamma Ecommerce",
     seoDescription: "",
     seoKeywords: "",

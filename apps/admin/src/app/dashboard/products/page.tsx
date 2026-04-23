@@ -232,24 +232,25 @@ export default function ProductsPage() {
 
       if (response.ok) {
         const result = await response.json();
-        if (result.success && result.data) {
+        if (result.success && result.data && result.data.product) {
+          const productData = result.data.product;
           const completeProductData = {
-            ...result.data,
-            shortDescription: result.data.shortDescription || "",
-            disclaimer: result.data.disclaimer || "",
-            ingredients: result.data.ingredients || "",
-            additionalDetails: result.data.additionalDetails || "",
-            materialCare: result.data.materialCare || "",
-            showIngredients: result.data.showIngredients || false,
-            showDisclaimer: result.data.showDisclaimer || false,
-            showAdditionalDetails: result.data.showAdditionalDetails || false,
-            showMaterialCare: result.data.showMaterialCare || false,
-            slug: result.data.slug || result.data.productCode || "",
-            categoryId: result.data.categoryId || "",
-            subCategoryId: result.data.subCategoryId || "",
-            pricingTiers: result.data.pricingTiers || [],
-            currencyPrices: result.data.currencyPrices || [],
-            attributes: result.data.attributes || [],
+            ...productData,
+            shortDescription: productData.shortDescription || "",
+            disclaimer: productData.disclaimer || "",
+            ingredients: productData.ingredients || "",
+            additionalDetails: productData.additionalDetails || "",
+            materialCare: productData.materialCare || "",
+            showIngredients: productData.showIngredients || false,
+            showDisclaimer: productData.showDisclaimer || false,
+            showAdditionalDetails: productData.showAdditionalDetails || false,
+            showMaterialCare: productData.showMaterialCare || false,
+            slug: productData.slug || productData.productCode || "",
+            categoryId: productData.categoryId || "",
+            subCategoryId: productData.subCategoryId || "",
+            pricingTiers: productData.pricingTiers || [],
+            currencyPrices: productData.currencyPrices || [],
+            attributes: productData.attributes || [],
           };
           setEditingProduct(completeProductData);
         } else {

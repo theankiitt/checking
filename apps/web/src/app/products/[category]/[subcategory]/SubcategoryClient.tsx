@@ -195,52 +195,33 @@ export default function SubcategoryClient({
         </div>
 
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 space-y-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredProducts.map((product) => (
               <Link
                 key={product.id}
                 href={`/products/${categorySlug}/${subcategorySlug}/${product.slug}`}
-                className="group bg-white  overflow-hidden hover:shadow-md transition-shadow"
+                className="group"
               >
-                <div className="relative aspect-square overflow-hidden ">
-                  {product.images?.[0] || product.image ? (
-                    <Image
-                      src={getImageUrl(product.images?.[0] || product.image) || "/image.png"}
-                      alt={product.name}
-                      fill
-                      className="object-contain group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-gray-200 text-5xl font-bold">{product.name.charAt(0)}</span>
-                    </div>
-                  )}
-
-                  {product.comparePrice && Number(product.comparePrice) > Number(product.price) && (
-                    <span className="absolute top-3 left-3 bg-[#EB6426] text-white text-[10px] px-2 py-1 rounded font-medium uppercase tracking-wide">
-                      Sale
-                    </span>
-                  )}
-
-                 
-                </div>
-
-                <div className={`p-4 tracking-tight`}>
-                  <h3 className="font-medium text-xl text-gray-700  line-clamp-2 transition-colors leading-snug">
-                    {product.name}
-                  </h3>
-
-                  <div className="flex items-baseline gap-2 mt-2">
-                    <span className="text-2xl font-extrabold text-[#EB6426]">
-                      ${Number(product.price).toFixed(2)}
-                    </span>
-                    {product.comparePrice && Number(product.comparePrice) > Number(product.price) && (
-                      <span className="text-xs text-gray-400 line-through">
-                        ${Number(product.comparePrice).toFixed(2)}
-                      </span>
+                <div className="bg-white rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                  <div className="relative aspect-square overflow-hidden bg-gray-50">
+                    {product.images?.[0] || product.image ? (
+                      <Image
+                        src={getImageUrl(product.images?.[0] || product.image) || "/image.png"}
+                        alt={product.name}
+                        fill
+                        className="object-contain group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-gray-200 text-5xl font-bold">{product.name.charAt(0)}</span>
+                      </div>
                     )}
                   </div>
                 </div>
+
+                <h3 className="font-medium text-sm text-gray-700 mt-2 line-clamp-2 leading-snug">
+                  {product.name}
+                </h3>
               </Link>
             ))}
           </div>

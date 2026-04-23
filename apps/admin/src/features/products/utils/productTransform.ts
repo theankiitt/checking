@@ -121,7 +121,7 @@ export const transformCurrencyPrices = (
   return [
     {
       ...DEFAULT_CURRENCY_PRICE,
-      price: productData.price && productData.price > 0 ? productData.price : 1,
+      price: productData.price && productData.price > 0 ? productData.price : 0,
     },
   ];
 };

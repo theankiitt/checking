@@ -49,7 +49,7 @@ export default function FoodsProductGrid({ products }: FoodsProductGridProps) {
             >
               Foods
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Nepal Authentic Product</p>
+            <p className="text-gray-800 text-md mt-1">Traditional Authentic Recipe</p>
           </div>
           <Link href="/products/foods" className="text-sm font-medium text-[#EB6426] hover:underline whitespace-nowrap">
             View More
@@ -67,39 +67,21 @@ export default function FoodsProductGrid({ products }: FoodsProductGridProps) {
             >
               <Link
                 href={`/products/${product.category?.slug || "foods"}/all/${product.slug}`}
-                className="group block bg-white  overflow-hidden h-full flex flex-col"
+                className="group block"
               >
-                <div className="relative aspect-square overflow-hidden bg-gray-50">
-                  <Image
-                    src={getFullImageUrl(product.image || product.images?.[0] || "")}
-                    alt={product.name}
-                    fill
-                    className="object-contain group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className={`p-3  tracking-tight`}>
-                  <h3 className="font-semibold text-gray-900 text-base line-clamp-2">
-                    {product.name}
-                  </h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xl text-[#EB6426] font-bold tracking-tight">
-                      $ {product.price.toLocaleString()}
-                    </span>
-                    {product.comparePrice && product.comparePrice > product.price && (
-                      <span className="text-xs text-gray-400 line-through">
-                        $ {product.comparePrice.toLocaleString()}
-                      </span>
-                    )}
+                <div className="bg-white rounded-xl overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden bg-gray-50">
+                    <Image
+                      src={getFullImageUrl(product.image || product.images?.[0] || "")}
+                      alt={product.name}
+                      fill
+                      className="object-contain group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                  {product.comparePrice && product.comparePrice > product.price && (
-                    <span className="inline-block mt-1 text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                      {Math.round(
-                        ((product.comparePrice - product.price) / product.comparePrice) * 100
-                      )}
-                      % off
-                    </span>
-                  )}
                 </div>
+                <h3 className="font-semibold mt-4 text-gray-900 text-base tracking-tight  group-hover:text-[#EB6426] transition-colors">
+                  {product.name}
+                </h3>
               </Link>
             </motion.div>
           ))}

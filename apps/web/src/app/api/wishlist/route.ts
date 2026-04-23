@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { wishlistSchema, validateData } from "@/lib/validations";
 
 const API_BASE_URL =
@@ -8,20 +6,7 @@ const API_BASE_URL =
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`, {
-      headers: {
-        Authorization: `Bearer ${(session as any).accessToken || ""}`,
-      },
-    });
+    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`);
 
     const data = await response.json();
 
@@ -40,25 +25,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
     const body = await request.json();
     
-    // Validate request body
     const validatedData = validateData(wishlistSchema, body);
 
     const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${(session as any).accessToken || ""}`,
       },
       body: JSON.stringify(validatedData),
     });
@@ -86,15 +60,6 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
     const { searchParams } = new URL(request.url);
     const productId = searchParams.get("productId");
 
@@ -109,9 +74,6 @@ export async function DELETE(request: Request) {
       `${API_BASE_URL}/api/v1/wishlist/${productId}`,
       {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${(session as any).accessToken || ""}`,
-        },
       },
     );
 

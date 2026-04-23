@@ -13,16 +13,6 @@ export interface SiteSettings {
   city: string;
   country: string;
 
-  // Business Settings
-  currency: string;
-  timezone: string;
-  language: string;
-
-  // Payment Settings
-  paymentMethods: string[];
-  taxRate: number;
-  shippingCost: number;
-
   // Appearance Settings
   primaryColor: string;
   secondaryColor: string;
@@ -43,14 +33,10 @@ export interface SiteSettings {
   autoReorder: boolean;
   trackInventory: boolean;
 
-  // Variant Management Settings
-  defaultVariantImageWidth?: number;
-  defaultVariantImageHeight?: number;
-  variantAutoGeneration?: boolean;
-  allowVariantCombinations?: boolean;
-  showOutOfStockVariants?: boolean;
-  variantFallbackEnabled?: boolean;
-  variantAttributeTypes?: string;
+  // Social Media Links
+  facebookUrl: string;
+  instagramUrl: string;
+  tiktokUrl: string;
 
   // SEO Settings
   seoTitle: string;
@@ -89,12 +75,10 @@ export interface SiteSettings {
 export type TabKey =
   | "general"
   | "contact"
-  | "business"
-  | "payment"
+  | "social"
   | "notifications"
   | "security"
   | "inventory"
-  | "variant-management"
   | "seo"
   | "analytics";
 

@@ -7,7 +7,7 @@ export interface Banner {
 }
 
 export const SITE_CONFIG = {
-  name: "GharSamma",
+  name: "Celebrate Multi Industries",
   url: "https://gharsamma.com",
   logo: "/gharsamma-logo.png",
   social: {

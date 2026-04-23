@@ -35,7 +35,7 @@ function NavbarClient({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({
-    siteName: "GharSamma",
+    siteName: "Celebrate Multi Industries",
     siteLogo: "",
     siteFavicon: "",
   });
@@ -88,7 +88,7 @@ function NavbarClient({
   );
 
   return (
-    <div className="w-full font-inter">
+    <div className="w-full font-inter fixed top-0 left-0 right-0 z-50 bg-white">
       <TopBanner />
 
       <div

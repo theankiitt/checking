@@ -7,7 +7,6 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useSession } from "next-auth/react";
 
 interface CartItem {
   id: string;
@@ -31,7 +30,6 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Cookie utility functions
 const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const nameLenEqual = name.length + 1;
@@ -68,20 +66,13 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const { data: session } = useSession();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Get cart cookie key based on login status
   const getCartKey = (): string => {
-    if (session?.user?.email) {
-      // Use hashed email or user ID for logged-in users
-      return `cart_${btoa(session.user.email).substring(0, 20)}`;
-    }
-    return "cart"; // Guest cart
+    return "cart";
   };
 
-  // Load cart from cookies on mount or when session changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       const cartKey = getCartKey();
@@ -95,15 +86,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
       setIsLoaded(true);
     }
-  }, [session?.user?.email]);
+  }, []);
 
-  // Save cart to cookie whenever it changes
   useEffect(() => {
     if (typeof window !== "undefined" && isLoaded) {
       const cartKey = getCartKey();
       setCookie(cartKey, JSON.stringify(cartItems), 30);
     }
-  }, [cartItems, isLoaded, session?.user?.email]);
+  }, [cartItems, isLoaded]);
 
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,

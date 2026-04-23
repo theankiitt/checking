@@ -138,12 +138,6 @@ export const NAVIGATION_ITEMS: NavItem[] = [
         permission: "analytics.view",
       },
       {
-        id: "sales-analytics",
-        label: "Sales Analytics",
-        icon: TrendingUp,
-        permission: "analytics.view",
-      },
-      {
         id: "product-performance",
         label: "Product Performance",
         icon: BarChart,
@@ -195,12 +189,6 @@ export const NAVIGATION_ITEMS: NavItem[] = [
         permission: "content.manage",
       },
       {
-        id: "splash-screen",
-        label: "Splash Screen",
-        icon: Image,
-        permission: "content.manage",
-      },
-      {
         id: "navigation",
         label: "Navigation",
         icon: Package,
@@ -215,6 +203,18 @@ export const NAVIGATION_ITEMS: NavItem[] = [
       {
         id: "about",
         label: "About",
+        icon: FileText,
+        permission: "content.manage",
+      },
+      {
+        id: "terms-and-conditions",
+        label: "Terms & Conditions",
+        icon: FileText,
+        permission: "content.manage",
+      },
+      {
+        id: "privacy-policy",
+        label: "Privacy Policy",
         icon: FileText,
         permission: "content.manage",
       },

@@ -1,18 +1,21 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { FreeMode, Pagination, Zoom } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/free-mode";
+import "swiper/css/zoom";
+import { X, ZoomIn, ZoomOut } from "lucide-react";
 
 interface ProductImageGalleryProps {
   images: string[];
   productName: string;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5555";
 
 const getImageUrl = (url: string | undefined) => {
   if (!url) return "/image.png";
@@ -24,6 +27,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
   const [activeIndex, setActiveIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+  const [showMobileModal, setShowMobileModal] = useState(false);
   const mainImageRef = useRef<HTMLDivElement>(null);
 
   const validImages = images.filter(Boolean);
@@ -53,7 +57,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
       <div className="hidden md:block">
         <div
           ref={mainImageRef}
-          className="relative aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-crosshair"
+          className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden cursor-crosshair"
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -62,7 +66,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
             src={getImageUrl(validImages[activeIndex])}
             alt={productName}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />
@@ -95,7 +99,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
                   src={getImageUrl(img)}
                   alt={`${productName} ${idx + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="80px"
                 />
               </button>
@@ -104,7 +108,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
         )}
       </div>
 
-      {/* Mobile: Swiper slider */}
+      {/* Mobile: Slider */}
       <div className="md:hidden">
         <Swiper
           modules={[Pagination]}
@@ -116,20 +120,88 @@ export default function ProductImageGallery({ images, productName }: ProductImag
         >
           {validImages.map((img, idx) => (
             <SwiperSlide key={idx}>
-              <div className="aspect-square bg-gray-100">
+              <button
+                onClick={() => setShowMobileModal(true)}
+                className="w-full aspect-square bg-gray-50 block"
+              >
                 <Image
                   src={getImageUrl(img)}
                   alt={productName}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="100vw"
                   priority={idx === 0}
                 />
-              </div>
+              </button>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+
+      {/* Mobile Image Modal */}
+      {showMobileModal && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col md:hidden">
+          <div className="flex items-center justify-between px-4 py-3">
+            <button
+              onClick={() => setShowMobileModal(false)}
+              className="p-2 text-white/80 hover:text-white"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <span className="text-white/60 text-sm">
+              {activeIndex + 1} / {validImages.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  const swiperEl = document.querySelector('.modal-swiper') as any;
+                  if (swiperEl?.swiper?.zoom?.out) swiperEl.swiper.zoom.out();
+                }}
+                className="p-2 text-white/80 hover:text-white"
+              >
+                <ZoomOut className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => {
+                  const swiperEl = document.querySelector('.modal-swiper') as any;
+                  if (swiperEl?.swiper?.zoom?.in) swiperEl.swiper.zoom.in();
+                }}
+                className="p-2 text-white/80 hover:text-white"
+              >
+                <ZoomIn className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex-1 relative">
+            <Swiper
+              modules={[FreeMode, Pagination, Zoom]}
+              zoom={{ maxRatio: 3, minRatio: 1 }}
+              freeMode
+              pagination={{ clickable: true, el: '.modal-pagination' }}
+              initialSlide={activeIndex}
+              onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+              className="modal-swiper h-full"
+            >
+              {validImages.map((img, idx) => (
+                <SwiperSlide key={idx} className="flex items-center justify-center">
+                  <div className="swiper-zoom-container w-full h-full flex items-center justify-center p-4">
+                    <Image
+                      src={getImageUrl(img)}
+                      alt={`${productName} ${idx + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                      priority={idx === 0}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <div className="modal-pagination absolute bottom-4 left-0 right-0"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

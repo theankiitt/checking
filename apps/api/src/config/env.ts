@@ -26,7 +26,7 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
   // Server
-  PORT: z.string().transform(Number).default("4444"),
+  PORT: z.string().transform(Number).default("5555"),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
@@ -59,7 +59,7 @@ const envSchema = z.object({
   CORS_ORIGIN: z
     .string()
     .default(
-      "http://localhost:4000,http://localhost:4001,http://localhost:4444",
+      "http://localhost:4000,http://localhost:4001,http://localhost:4002,http://localhost:4004,http://localhost:4444",
     ),
 
   // Security

@@ -5,7 +5,8 @@ import { headers } from "next/headers";
 import "./globals.css";
 import { Providers, CookieConsent } from "@/features/layout";
 import { BottomNavWrapper, Footer, Navbar } from "@/features/navigation";
-import AuthModal from "@/components/AuthModal";
+import SmoothScroll from "@/components/SmoothScroll";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { public_sans } from "./fonts";
 
 const GA_MEASUREMENT_ID =
@@ -16,8 +17,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://gharsamma.com",
   ),
   title: {
-    default: "GharSamma - Traditional Nepali Products",
-    template: "%s | GharSamma",
+    default: "Celebrate Multi Industries - Traditional Nepali Products",
+    template: "%s | Celebrate Multi Industries",
   },
   description:
     "Discover authentic Nepali handicrafts, puja samagri, musical instruments, herbs, and jewelry at GharSamma",
@@ -29,9 +30,9 @@ export const metadata: Metadata = {
     "puja samagri",
     "handicrafts",
   ],
-  authors: [{ name: "GharSamma" }],
-  creator: "GharSamma",
-  publisher: "GharSamma",
+  authors: [{ name: "Celebrate Multi Industries" }],
+  creator: "Celebrate Multi Industries",
+  publisher: "Celebrate Multi Industries",
   formatDetection: {
     email: false,
     address: false,
@@ -41,22 +42,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: "GharSamma",
-    title: "GharSamma - Traditional Nepali Products",
+    siteName: "Celebrate Multi Industries",
+    title: "Celebrate Multi Industries - Traditional Nepali Products",
     description:
       "Discover authentic Nepali handicrafts, puja samagri, musical instruments, herbs, and jewelry",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/gharsamma-logo.png",
         width: 1200,
         height: 630,
-        alt: "GharSamma",
+        alt: "Celebrate Multi Industries",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GharSamma - Traditional Nepali Products",
+    title: "Celebrate Multi Industries - Traditional Nepali Products",
     description:
       "Discover authentic Nepali handicrafts, puja samagri, musical instruments, herbs, and jewelry",
     images: ["/og-image.jpg"],
@@ -93,8 +94,7 @@ export default async function RootLayout({
 }>) {
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "/";
-  const showNavbar =
-    !pathname.startsWith("/help") && !pathname.startsWith("/login");
+  const showNavbar = !pathname.startsWith("/help");
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -108,18 +108,19 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className={`${public_sans.className}  antialiased`}>
+        <SmoothScroll />
         <Providers>
-          <AuthModal />
           <CookieConsent />
           {showNavbar && <Navbar />}
 
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-screen flex flex-col pt-[120px] md:pt-[160px]">
             <main className="flex-1 pb-20 md:pb-0">
               <Suspense fallback={null}>{children}</Suspense>
             </main>
           </div>
 
           <BottomNavWrapper />
+          <WhatsAppButton />
         </Providers>
       </body>
     </html>

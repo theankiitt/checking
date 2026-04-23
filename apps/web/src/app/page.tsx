@@ -15,6 +15,7 @@ import CustomOrderSection from "@/components/CustomOrderSection";
 import HomepageBanner from "@/components/HomepageBanner";
 import DualImageBanner from "@/components/DualImageBanner";
 import { manrope } from "./fonts";
+import InfoBanner from "@/components/InfoBanner";
 
 const SECTION_CONFIG = [
   {
@@ -26,6 +27,11 @@ const SECTION_CONFIG = [
     Component: DualImageBanner,
     label: "Dual Image Banner",
     key: "dual-image-banner",
+  },
+  {
+    Component: InfoBanner,
+    label: "Info Banner",
+    key: "info-banner",
   },
   { Component: SnacksSubCategory, label: "Snacks Collection", key: "snacks-subcategory" },
   {

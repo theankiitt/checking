@@ -77,7 +77,7 @@ export default function CookieConsent() {
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[10002]"
         >
-          <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-[calc(100vw-32px)] md:w-[400px] lg:w-[450px] max-w-md overflow-hidden">
+          <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-[calc(100%-32px)] md:w-[400px] lg:w-[450px] max-w-md overflow-hidden">
             {/* Decorative gradient bar at top */}
             <div className="h-1.5 bg-gradient-to-r from-[#EB6426] via-[#FB923C] to-[#EB6426]" />
 

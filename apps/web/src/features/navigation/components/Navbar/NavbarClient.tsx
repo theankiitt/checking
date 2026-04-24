@@ -161,9 +161,9 @@ function NavbarClient({
             className="flex items-center justify-center"
             style={{ overflow: "visible" }}
           >
-            <div
-              className={`flex space-x-3 md:space-x-5 text-lg font-medium text-white ${manrope.className}`}
-            >
+<div
+               className={`flex flex-wrap space-x-3 md:space-x-5 text-lg font-medium text-white ${manrope.className}`}
+             >
               {navigationItems.map((item) =>
                 item.type === "dropdown" ? (
                   <NavigationDropdown

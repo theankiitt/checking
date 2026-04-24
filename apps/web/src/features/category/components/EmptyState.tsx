@@ -10,17 +10,17 @@ export default function EmptyState({
   title = "Shop By Category",
 }: EmptyStateProps) {
   return (
-    <div className={`relative my-10 py-6 bg-white ${manrope.className}`} role="region">
+    <div className={`relative py-4 bg-white tracking-tight text-md ${manrope.className}`} role="region">
       <div className="mb-6 md:mb-8 mx-4 sm:mx-8 md:mx-12 lg:mx-20 mt-4">
         <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-0`}>
           <h2 >
-            <span className={`text-xl sm:text-4xl text-black ${manrope.className} font-semibold`}>
+            <span className={` ${manrope.className} text-2xl sm:text-3xl text-black font-extrabold tracking-tight`}>
               {title}
             </span>
           </h2>
         </div>
       </div>
-      <div className="text-center text-sm sm:text-base md:text-lg py-12 text-gray-800">{message}</div>
+      <div className="text-center text-lg sm:text-base md:text-lg py-12 text-gray-900">{message}</div>
     </div>
   );
 }

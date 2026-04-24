@@ -315,7 +315,7 @@ function ImageGallery({
 
       {isZoomed && (
         <div
-          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[800px] h-[800px] rounded-xl overflow-hidden shadow-2xl border-2 border-gray-300 bg-white"
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] h-[90vw] max-w-[800px] max-h-[800px] rounded-xl overflow-hidden shadow-2xl border-2 border-gray-300 bg-white"
           onClick={onCloseZoom}
         >
           <div

@@ -66,20 +66,20 @@ function ContactInfo({ settings }: { settings: SiteSettings }) {
         Contact
       </h3>
       <ul className="space-y-3">
-        <li className="flex items-center gap-3">
-          <Phone className="w-5 h-5 text-gray-400 flex-shrink-0" />
+        <li className="flex items-center gap-3 ">
+          <Phone className="w-5 h-5 text-gray-200 flex-shrink-0" />
           <a
             href={`tel:${settings.phone?.replace(/\s/g, "")}`}
-            className="text-sm text-gray-300 hover:text-white transition-colors"
+            className="text-md text-gray-200 hover:text-white transition-colors"
           >
             {settings.phone}
           </a>
         </li>
         <li className="flex items-center gap-3">
-          <Mail className="w-5 h-5 text-gray-400 flex-shrink-0" />
+          <Mail className="w-5 h-5 text-gray-200 flex-shrink-0" />
           <a
             href={`mailto:${settings.email}`}
-            className="text-sm text-gray-300 hover:text-white transition-colors"
+            className="text-md text-gray-200 hover:text-white transition-colors"
           >
             {settings.email}
           </a>
@@ -100,7 +100,7 @@ function QuickLinksSection({ links }: { links: QuickLink[] }) {
           <li key={link.href + link.label}>
             <Link
               href={link.href}
-              className="text-sm text-gray-300 hover:text-white transition-colors"
+              className="text-md text-gray-200 hover:text-white transition-colors"
             >
               {link.label}
             </Link>
@@ -119,16 +119,16 @@ function FooterBottom({ siteName }: { siteName: string }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col items-center md:items-start gap-1">
-            <p className={`text-sm text-gray-400 ${manrope.className}`}>
-              © {currentYear} {siteName}. All rights reserved.
+            <p className={`text-sm text-gray-300 ${manrope.className}`}>
+              © {currentYear} {siteName}. 
             </p>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-400">
               Website by{" "}
               <a
                 href="https://syncforge.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors font-medium"
+                className="text-gray-300 hover:text-white transition-colors font-medium"
               >
                 Sync.Forge
               </a>
@@ -137,13 +137,13 @@ function FooterBottom({ siteName }: { siteName: string }) {
           <div className="flex flex-wrap justify-center items-center gap-6">
             <Link
               href="/privacy-policy"
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms-and-conditions"
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
             >
               Terms of Service
             </Link>
@@ -235,24 +235,24 @@ export default function Footer({ siteSettings }: FooterProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           <div>
-            <Link href="/" className="inline-block mb-4">
-                <Image
-                  src="/gharsamma-logo.png"
-                  alt={settings.siteName || "Celebrate Multi Industries"}
-                  width={120}
-                  height={40}
-                  className="h-10 w-auto object-contain brightness-0 invert"
-                  style={{ width: "auto", height: "auto" }}
+            <Link href="/" className="block mb-0 md:mb-4 leading-none">
+<Image
+                   src="/gharsamma-logo.png"
+                   alt={settings.siteName || "Celebrate Multi Industries"}
+                   width={96}
+                   height={96}
+                   className="w-24 h-24 object-contain brightness-0 invert"
+                 
                   priority
                 />
-            </Link>
-            <p className="text-md text-white text-justify leading-relaxed">
+</Link>
+             <p className="text-md text-white text-justify leading-relaxed -mt-1">
               {settings.footerDescription ||
                 "Authentic Nepali handicrafts, traditional foods, and cultural products. We deliver the rich heritage of Nepal directly to your doorstep worldwide."}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-[auto_1fr_1fr] gap-x-16 gap-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-x-4 md:gap-x-16 gap-y-8">
             <QuickLinksSection links={quickLinks} />
             <ContactInfo settings={settings} />
             <SocialLinks links={socialLinks} />

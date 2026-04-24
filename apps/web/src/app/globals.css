@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
 html.lenis,
 html.lenis body {
   height: auto;
+
 }
 
 .lenis.lenis-smooth {
@@ -35,6 +43,8 @@ html.lenis body {
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-display: var(--font-bricolage);
+  --max-width-8xl: 88rem;
+  --max-width-9xl: 96rem;
 }
 
 @utility font-inter {

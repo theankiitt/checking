@@ -36,7 +36,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className={`text-3xl font-bold tracking-tight text-gray-900 mb-6 ${manrope.className}`}>All Categories</h1>
+      <h1 className={` text-2xl sm:text-3xl text-black font-extrabold tracking-tight  mb-6 ${manrope.className}`}>All Categories</h1>
       {(loading || error) && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {Array.from({ length: 12 }).map((_, i) => (

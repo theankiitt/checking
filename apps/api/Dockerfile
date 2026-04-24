@@ -44,7 +44,7 @@ COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/
 COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma ./node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma
 
 RUN mkdir -p /app/uploads /app/apps/api/logs /app/apps/api/uploads && chown -R nodejs:nodejs /app/uploads /app/apps/api/logs /app/apps/api/uploads
-RUN chmod +x ./apps/api/entrypoint.sh
+RUN chmod +x /app/apps/api/entrypoint.sh
 
 USER nodejs
 
@@ -53,4 +53,4 @@ ENV PORT=4444
 ENV HOSTNAME="0.0.0.0"
 
 WORKDIR /app/apps/api
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/apps/api/entrypoint.sh"]

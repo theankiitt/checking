@@ -19,6 +19,7 @@ COPY packages/typescript-config ./packages/typescript-config/
 
 WORKDIR /app
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_FONT_GOOGLE_MOCKED=1
 RUN pnpm --filter admin run build
 
 FROM base AS runner

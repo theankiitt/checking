@@ -53,6 +53,7 @@ k8s/
 *.yaml
 *.yml
 !pnpm-lock.yaml
+!pnpm-workspace.yaml
 !docker-compose*.yml
 
 # IDE

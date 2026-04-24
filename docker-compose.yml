@@ -33,6 +33,7 @@ services:
       retries: 5
 
   api:
+    image: theankiitt/gharsamma-api:latest
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -66,6 +67,7 @@ services:
       start_period: 40s
 
   web:
+    image: theankiitt/gharsamma-web:latest
     build:
       context: .
       dockerfile: apps/web/Dockerfile
@@ -81,6 +83,7 @@ services:
       - api
 
   admin:
+    image: theankiitt/gharsamma-admin:latest
     build:
       context: .
       dockerfile: apps/admin/Dockerfile

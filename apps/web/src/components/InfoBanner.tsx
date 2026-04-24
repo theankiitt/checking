@@ -16,7 +16,7 @@ const BANNER_MESSAGES = [
 
 export default function InfoBanner() {
   return (
-    <div className="bg-[#EB6426] text-white overflow-hidden py-3 my-8">
+    <div className={`bg-[#EB6426] text-white overflow-hidden py-3 my-8 ${manrope.className}`}>
       <div className="relative flex items-center">
         <div
           className="flex items-center gap-8 whitespace-nowrap animate-marquee"

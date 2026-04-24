@@ -16,11 +16,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY apps/web ./apps/web/
 COPY packages/typescript-config ./packages/typescript-config/
-COPY apps/api/prisma ./prisma/
 
-WORKDIR /app/apps/web
-COPY apps/api/prisma ./prisma/
-RUN ./node_modules/.bin/prisma generate
 WORKDIR /app
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm --filter web run build
@@ -32,12 +28,10 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-# Copy the entire app for next start
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-COPY --from=builder /app/apps/web/.next ./apps/web/.next
-COPY --from=builder /app/apps/web/public ./apps/web/public
-COPY apps/web ./apps/web/
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./public
 
 USER nodejs
 
@@ -45,5 +39,5 @@ EXPOSE 4000
 ENV PORT=4000
 ENV HOSTNAME="0.0.0.0"
 
-WORKDIR /app/apps/web
-CMD ["npx", "next", "start"]
+WORKDIR /app
+CMD ["node", "server.js"]

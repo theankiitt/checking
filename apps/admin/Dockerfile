@@ -17,9 +17,9 @@ COPY --from=deps /app/apps/admin/node_modules ./apps/admin/node_modules
 COPY apps/admin ./apps/admin/
 COPY packages/typescript-config ./packages/typescript-config/
 
-WORKDIR /app/apps/admin
+WORKDIR /app
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-RUN npx next build --webpack
+RUN pnpm --filter admin run build
 
 FROM base AS runner
 WORKDIR /app
@@ -28,12 +28,8 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-# Copy the entire app for next start
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/admin/node_modules ./apps/admin/node_modules
-COPY --from=builder /app/apps/admin/.next ./apps/admin/.next
-COPY --from=builder /app/apps/admin/public ./apps/admin/public
-COPY apps/admin ./apps/admin/
+COPY --from=builder /app/apps/admin ./apps/admin
+COPY --from=builder /app/node_modules ./node_modules
 
 USER nodejs
 
@@ -42,4 +38,4 @@ ENV PORT=4001
 ENV HOSTNAME="0.0.0.0"
 
 WORKDIR /app/apps/admin
-CMD ["npx", "next", "start"]
+CMD ["npx", "next", "start", "-p", "4001"]

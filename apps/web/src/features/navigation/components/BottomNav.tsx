@@ -48,8 +48,7 @@ export default function BottomNav() {
               src="/gharsamma-logo.png"
               alt="Gharsamma"
               fill
-              width={100}
-              height={32}
+             
               className="object-contain brightness-0 invert "
             />
           </div>

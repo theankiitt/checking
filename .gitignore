@@ -49,13 +49,11 @@ test-results/
 # Kubernetes files
 k8s/
 
-# Docker compose files (keep these tracked)
-!docker-compose*.yml
-
 # Ignore other yaml files
 *.yaml
 *.yml
 !pnpm-lock.yaml
+!docker-compose*.yml
 
 # IDE
 .idea/

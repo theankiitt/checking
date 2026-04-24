@@ -36,7 +36,6 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-    image: ${DOCKER_REGISTRY:-theankitx}/gharsamma-api:latest
     container_name: gharsamma-api
     restart: unless-stopped
     environment:
@@ -72,7 +71,6 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.gharsamma.com}
-    image: ${DOCKER_REGISTRY:-theankitx}/gharsamma-web:latest
     container_name: gharsamma-web
     restart: unless-stopped
     environment:
@@ -88,7 +86,6 @@ services:
       dockerfile: apps/admin/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.gharsamma.com}
-    image: ${DOCKER_REGISTRY:-theankitx}/gharsamma-admin:latest
     container_name: gharsamma-admin
     restart: unless-stopped
     environment:

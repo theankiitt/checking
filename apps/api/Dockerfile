@@ -53,4 +53,4 @@ ENV PORT=4444
 ENV HOSTNAME="0.0.0.0"
 
 WORKDIR /app/apps/api
-ENTRYPOINT ["../../entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

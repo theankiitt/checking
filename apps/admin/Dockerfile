@@ -19,8 +19,7 @@ COPY packages/typescript-config ./packages/typescript-config/
 
 WORKDIR /app
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_FONT_GOOGLE_MOCKED=1
-RUN pnpm --filter admin run build
+RUN for i in 1 2 3 4 5; do pnpm --filter admin run build && break || echo "Build attempt $i failed, retrying..." && sleep 10; done
 
 FROM base AS runner
 WORKDIR /app

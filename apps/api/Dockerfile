@@ -37,14 +37,14 @@ RUN pnpm install --prod --no-frozen-lockfile
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/apps/api/prisma ./apps/api/prisma/
-COPY apps/api/entrypoint.sh ./entrypoint.sh
+COPY --from=builder /app/apps/api/entrypoint.sh ./apps/api/entrypoint.sh
 
 # Copy generated Prisma client (with query engine) from builder
 COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/@prisma/client ./node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/@prisma/client
 COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma ./node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma
 
 RUN mkdir -p /app/uploads /app/apps/api/logs /app/apps/api/uploads && chown -R nodejs:nodejs /app/uploads /app/apps/api/logs /app/apps/api/uploads
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./apps/api/entrypoint.sh
 
 USER nodejs
 

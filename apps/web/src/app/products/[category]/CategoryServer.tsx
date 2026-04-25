@@ -16,8 +16,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4
 
 async function fetchCategoryData(categorySlug: string) {
   try {
-    const categoriesRes = await fetch(`${API_BASE_URL}/api/v1/categories?includeInactive=false`, {
-      next: { revalidate: 3600 },
+    const categoriesRes = await fetch(`${API_BASE_URL}/api/v1/categories?includeInactive=false&t=${Date.now()}`, {
+      cache: "no-store",
     });
     const categoriesData = await categoriesRes.json();
 
@@ -104,8 +104,8 @@ export default async function CategoryServer({ categorySlug }: { categorySlug: s
 
 function CategorySkeleton() {
   return (
-    <div className="bg-[#F0F2F5] min-h-screen">
-      <div className="max-w-[88rem] mx-auto px-4 pt-8 pb-12">
+    <div className="bg-gray-100 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 pt-8 pb-12">
         <div className="animate-pulse">
           <div className="h-12 bg-gray-300 rounded w-48 mb-8"></div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-12">

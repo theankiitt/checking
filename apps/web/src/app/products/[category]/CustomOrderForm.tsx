@@ -100,10 +100,10 @@ export default function CustomOrderForm({ categorySlug }: { categorySlug?: strin
           {showCountryDropdown && (
             <>
               <div
-                className="fixed inset-0 z-10"
+                className="fixed inset-0 z-40"
                 onClick={() => setShowCountryDropdown(false)}
               />
-              <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 z-20 max-h-64 overflow-y-auto">
+              <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 z-50 max-h-64 overflow-y-auto">
                 {COUNTRIES.map((country) => (
                   <button
                     key={country.code}

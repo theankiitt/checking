@@ -69,7 +69,7 @@ html.lenis body {
 }
 
 body {
-  background: white;
+  background: #f3f4f6;
   color: var(--foreground);
   overflow-x: hidden;
   font-family: var(--font-inter);

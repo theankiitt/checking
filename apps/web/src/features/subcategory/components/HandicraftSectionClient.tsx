@@ -46,7 +46,7 @@ export default function HandicraftSectionClient({
   if (!products || products.length === 0) {
     return (
       <section className="w-full bg-white py-8 md:py-12">
-        <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 mb-2 ${manrope.className}`}>
             {title}
           </h2>
@@ -67,7 +67,7 @@ export default function HandicraftSectionClient({
 
   return (
     <section className="w-full bg-white py-8 md:py-12">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 tracking-tight ${manrope.className}`}>
@@ -98,7 +98,10 @@ export default function HandicraftSectionClient({
                       src={getFullImageUrl(product.image)}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 640px) 50vw, 224px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      priority={index < 4}
+                      loading={index < 4 ? "eager" : "lazy"}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-100">

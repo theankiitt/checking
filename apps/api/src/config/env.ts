@@ -26,7 +26,7 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
   // Server
-  PORT: z.string().transform(Number).default("5555"),
+  PORT: z.string().transform(Number).default("4444"),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),

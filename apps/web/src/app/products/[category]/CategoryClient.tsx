@@ -83,8 +83,7 @@ export default function CategoryClient({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [subcategoryName, setSubcategoryName] = useState("");
-  const [showChildrenModal, setShowChildrenModal] = useState(false);
-  const [modalSubcategory, setModalSubcategory] = useState<Category | null>(null);
+  const [dropdownSubcategory, setDropdownSubcategory] = useState<Category | null>(null);
   const [productsLoading, setProductsLoading] = useState(false);
 
   const baseSlug = categorySlug?.split("-")[0] || "";
@@ -99,16 +98,19 @@ export default function CategoryClient({
 
   const getImageUrl = (url: string | undefined) => {
     if (!url) return null;
-    if (url.startsWith("http")) return url;
+    if (url.startsWith("http")) {
+      return url.replace("localhost:5555", "localhost:4444");
+    }
     return `${API_BASE_URL}${url}`;
   };
 
   const subCategories = category?.children || [];
+  console.log("Full category data:", JSON.stringify(category, null, 2));
 
   const handleSubcategoryClick = (sub: Category) => {
+    console.log("Subcategory clicked:", sub.name, "Children:", sub.children);
     if (sub.children && sub.children.length > 0) {
-      setModalSubcategory(sub);
-      setShowChildrenModal(true);
+      setDropdownSubcategory(sub);
     } else {
       router.push(`/products/${categorySlug}/${sub.slug}`);
     }
@@ -134,8 +136,8 @@ export default function CategoryClient({
   };
 
   return (
-    <div className="bg-[#F0F2F5] min-h-screen">
-      <div className="max-w-[88rem] mx-auto px-4 pt-8 pb-12">
+    <div className="bg-gray-100">
+      <div className="max-w-7xl mx-auto px-4 py-16">
         {/* Back Button */}
         <button
           onClick={() => router.push("/")}
@@ -158,16 +160,17 @@ export default function CategoryClient({
         {/* Subcategories and Banner */}
         <div className="flex flex-col lg:flex-row gap-8 mb-12">
           {/* Subcategory Grid */}
-          <div className="lg:w-1/2">
+          <div className="lg:w-3/5">
             {subCategories.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                 {subCategories.map((sub) => {
                   const imageUrl = getImageUrl(sub.image);
+                  const hasDropdown = sub.children && sub.children.length > 0;
                   return (
                     <button
                       key={sub.id}
                       onClick={() => handleSubcategoryClick(sub)}
-                      className="rounded-xl overflow-hidden transition-all text-left hover:shadow-md"
+                      className="w-full rounded-xl overflow-hidden transition-all text-left hover:shadow-md"
                     >
                       <div className="relative h-40 bg-gray-50 rounded-md">
                         {imageUrl ? (
@@ -191,7 +194,9 @@ export default function CategoryClient({
                         <div className={`font-extrabold text-lg text-gray-900 tracking-tight transition-colors ${manrope.className}`}>
                           {sub.name}
                         </div>
-                       
+                        {hasDropdown && (
+                          <span className="text-xs text-gray-500 mt-1 block">{sub.children?.length ?? 0} categories</span>
+                        )}
                       </div>
                     </button>
                   );
@@ -205,7 +210,7 @@ export default function CategoryClient({
           </div>
 
           {/* Banner */}
-          <div className="mt-2 md:mt-0 lg:w-1/2">
+          <div className="lg:w-2/5">
             <div className="relative rounded-2xl overflow-hidden h-full min-h-[480px]">
               {category?.image ? (
                 <Image
@@ -247,7 +252,7 @@ export default function CategoryClient({
                   </div>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                     {group.products.map((product) => (
-                      <ProductCard key={product.id} product={product} />
+                      <ProductCard key={product.id} product={product} categorySlug={categorySlug} subcategorySlug={group.category.slug} />
                     ))}
                   </div>
                 </div>
@@ -296,7 +301,7 @@ export default function CategoryClient({
             ) : products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} categorySlug={categorySlug} subcategorySlug={selectedSubcategory || undefined} />
                 ))}
               </div>
             ) : (
@@ -325,15 +330,15 @@ export default function CategoryClient({
                 .flatMap((group) => group.products)
                 .slice(0, 8)
                 .map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} categorySlug={categorySlug} />
                 ))}
             </div>
           </div>
         )}
 
         {/* Custom Order Section */}
-        <div className="mt-16 max-w-[88rem]">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-8 lg:p-12">
+        <div className="mt-16 max-w-7xl">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 lg:p-12">
             <div className="text-center mb-8">
               <h2 className={`text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight mb-3 ${manrope.className}`}>
                 Customize Your Order
@@ -348,7 +353,7 @@ export default function CategoryClient({
                 <CustomOrderForm categorySlug={categorySlug} />
               </Suspense>
 
-              <div className="relative my-6">
+              <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200"></div>
                 </div>
@@ -370,41 +375,41 @@ export default function CategoryClient({
           </div>
         </div>
 
-        {/* Children Modal */}
-        {showChildrenModal && modalSubcategory && (
+        {/* Subcategory Dropdown Overlay */}
+        {dropdownSubcategory && (
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50"
-            onClick={() => { setShowChildrenModal(false); setModalSubcategory(null); }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={() => setDropdownSubcategory(null)}
           >
             <div
-              className="bg-[#F0F2F5] w-full sm:max-w-2xl sm:rounded-2xl rounded-t-3xl max-h-[95vh] overflow-hidden flex flex-col"
+              className="bg-white w-full max-w-2xl mx-4 rounded-2xl shadow-2xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-white px-6 py-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+              <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
                 <div>
                   <h3 className={`text-xl font-bold text-gray-900 tracking-tight ${manrope.className}`}>
-                    {modalSubcategory.name}
+                    {dropdownSubcategory.name}
                   </h3>
                   <p className={`text-sm text-gray-600 mt-0.5 ${manrope.className}`}>
-                    {modalSubcategory.children?.length} categories
+                    {dropdownSubcategory.children?.length} categories
                   </p>
                 </div>
                 <button
-                  onClick={() => { setShowChildrenModal(false); setModalSubcategory(null); }}
-                  className="p-2.5"
+                  onClick={() => setDropdownSubcategory(null)}
+                  className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <X className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
-              <div className="overflow-y-auto p-6">
+              <div className="p-6 max-h-[70vh] overflow-y-auto">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {modalSubcategory.children?.map((child) => {
+                  {dropdownSubcategory.children?.map((child) => {
                     const childImageUrl = getImageUrl(child.image);
                     return (
                       <button
                         key={child.id}
                         onClick={() => handleChildrenSelect(child)}
-                        className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all text-left"
+                        className="group bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all text-left"
                       >
                         <div className="relative h-36 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
                           {childImageUrl ? (
@@ -442,6 +447,7 @@ export default function CategoryClient({
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

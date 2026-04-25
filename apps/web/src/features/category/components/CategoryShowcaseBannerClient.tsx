@@ -15,7 +15,7 @@ interface CategoryShowcaseBannerClientProps {
   title?: string;
 }
 
-function BentoCard({ item }: { item: CategoryItem }) {
+function BentoCard({ item, priority = false }: { item: CategoryItem; priority?: boolean }) {
   const getFullImageUrl = (path: string) => {
     if (!path) return "/achar-layout.webp";
     if (path.startsWith("http")) return path;
@@ -39,6 +39,8 @@ function BentoCard({ item }: { item: CategoryItem }) {
           fill
           className="object-contain transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, 33vw"
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
           onError={(e) => {
             e.currentTarget.src = "/achar-layout.webp";
           }}
@@ -88,26 +90,26 @@ export default function CategoryShowcaseBannerClient({
 
   return (
     <section className="w-full bg-white pt-14 pb-4 ">
-      <div className="max-w-[88rem] mx-auto ">
+      <div className="max-w-7xl mx-auto ">
         <div
           className="grid grid-cols-3 md:grid-cols-3 gap-3"
           style={{ height: "500px" }}
         >
           {firstCategory && (
             <div className="col-span-1 row-span-1 h-full">
-              <BentoCard item={firstCategory} />
+              <BentoCard item={firstCategory} priority />
             </div>
           )}
 
           {secondCategory && (
             <div className="col-span-1 row-span-1 h-full">
-              <BentoCard item={secondCategory} />
+              <BentoCard item={secondCategory} priority />
             </div>
           )}
 
           {thirdCategory && (
             <div className="col-span-1 row-span-1 h-full">
-              <BentoCard item={thirdCategory} />
+              <BentoCard item={thirdCategory} priority />
             </div>
           )}
 

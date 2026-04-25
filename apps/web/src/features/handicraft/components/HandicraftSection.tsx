@@ -58,6 +58,8 @@ export default function HandicraftSection() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="25vw"
+                  priority={["1", "2"].includes(item.id)}
+                  loading={["1", "2"].includes(item.id) ? "eager" : "lazy"}
                 />
               </div>
               <div className="p-3">

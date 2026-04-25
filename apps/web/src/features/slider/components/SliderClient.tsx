@@ -26,7 +26,7 @@ export default function SliderClient({ sliders }: SliderClientProps) {
 
   return (
     <section
-      className={`relative w-full max-w-[88rem] mx-auto px-4 md:px-6 lg:px-8 mt-4 md:mt-8 h-[200px] md:h-[300px] lg:h-[400px] xl:h-[450px] rounded-lg overflow-hidden ${styles.section}`}
+      className={`relative w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 mt-4 md:mt-8 h-[200px] md:h-[300px] lg:h-[400px] xl:h-[450px] rounded-lg overflow-hidden ${styles.section}`}
       aria-label="Featured carousel"
       role="region"
     >

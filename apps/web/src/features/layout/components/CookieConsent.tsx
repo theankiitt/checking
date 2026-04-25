@@ -75,37 +75,37 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[10002]"
+          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:bottom-6 md:right-6 z-[10002]"
         >
-          <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-[calc(100%-32px)] md:w-[400px] lg:w-[450px] max-w-md overflow-hidden">
+          <div className="relative bg-white rounded-xl shadow-2xl border border-gray-200 w-full md:w-[400px] lg:w-[450px] max-w-none md:max-w-md overflow-hidden">
             {/* Decorative gradient bar at top */}
             <div className="h-1.5 bg-gradient-to-r from-[#EB6426] via-[#FB923C] to-[#EB6426]" />
 
-            <div className="p-5 md:p-6">
+            <div className="p-3 md:p-6">
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute top-2 right-2 md:top-4 md:right-4 text-gray-400 hover:text-gray-600 transition-colors"
                 aria-label="Close"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 md:w-5 md:h-5" />
               </button>
 
               {/* Content */}
-              <div className="flex gap-4">
+              <div className="flex gap-3 md:gap-4">
                 {/* Icon */}
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#EB6426]/10 to-[#FB923C]/10 rounded-full flex items-center justify-center">
-                    <Cookie className="w-6 h-6 text-[#EB6426]" />
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#EB6426]/10 to-[#FB923C]/10 rounded-full flex items-center justify-center">
+                    <Cookie className="w-5 h-5 md:w-6 md:h-6 text-[#EB6426]" />
                   </div>
                 </div>
 
                 {/* Text Content */}
-                <div className={`flex-1 pr-6 ${manrope.className}`}>
-                  <h3 className="text-base font-bold text-gray-900 mb-2">
+                <div className={`flex-1 pr-4 md:pr-6 ${manrope.className}`}>
+                  <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 md:mb-2">
                     We Value Your Privacy
                   </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                  <p className="text-xs md:text-sm text-gray-600 leading-relaxed mb-3 md:mb-4">
                     We use cookies to enhance your experience and analyze our traffic.{' '}
                     <Link
                       href="/privacy-policy"
@@ -116,16 +116,16 @@ export default function CookieConsent() {
                   </p>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 md:gap-3">
                     <button
                       onClick={handleDecline}
-                      className="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 border border-gray-200"
+                      className="flex-1 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 border border-gray-200"
                     >
                       Decline
                     </button>
                     <button
                       onClick={handleAccept}
-                      className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-[#EB6426] to-[#FB923C] hover:from-[#d65a1f] hover:to-[#EB6426] rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                      className="flex-1 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold text-white bg-orange-500 hover:bg-orange-600 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                     >
                       Accept All
                     </button>

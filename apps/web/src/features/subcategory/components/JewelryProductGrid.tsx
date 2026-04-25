@@ -41,13 +41,13 @@ const getFullImageUrl = (imagePath: string): string => {
 export default function JewelryProductGrid({ products }: JewelryProductGridProps) {
   return (
     <section className="w-full bg-gray-100 py-6 md:py-8">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2
               className={`text-2xl md:text-3xl tracking-tight font-bold text-black ${manrope.className}`}
             >
-              Jewelry Collection
+              Jewelry
             </h2>
             <p className="text-gray-500 text-sm mt-1">Traditional Nepali Jewelry</p>
           </div>
@@ -57,7 +57,12 @@ export default function JewelryProductGrid({ products }: JewelryProductGridProps
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-          {products.map((product, index) => (
+          {products.length === 0 ? (
+            <div className="w-full text-center py-12">
+              <p className="text-gray-500 text-lg">No product available</p>
+            </div>
+          ) : (
+            products.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -74,7 +79,10 @@ export default function JewelryProductGrid({ products }: JewelryProductGridProps
                     src={getFullImageUrl(product.image || product.images?.[0] || "")}
                     alt={product.name}
                     fill
+                    sizes="(max-width: 640px) 50vw, 192px"
                     className="object-contain group-hover:scale-105 transition-transform duration-500"
+                    priority={index < 4}
+                    loading={index < 4 ? "eager" : "lazy"}
                   />
                 </div>
                 <div className={`p-3 ${manrope.className} tracking-tight`}>
@@ -102,7 +110,8 @@ export default function JewelryProductGrid({ products }: JewelryProductGridProps
                 </div>
               </Link>
             </motion.div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>

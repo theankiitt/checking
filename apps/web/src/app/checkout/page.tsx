@@ -15,7 +15,7 @@ function CheckoutContent() {
   const variant = searchParams?.get("variant") || "0";
 
   return (
-    <div className={`min-h-screen bg-gray-50 ${manrope.className}`}>
+      <div className={`bg-gray-50 ${manrope.className}`}>
       <CheckoutForm
         productId={productId}
         quantity={parseInt(quantity)}

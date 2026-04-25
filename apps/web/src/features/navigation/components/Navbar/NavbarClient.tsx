@@ -98,8 +98,8 @@ function NavbarClient({
           borderColor: COLORS.primaryDark,
         }}
       >
-        <div className="max-w-8xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-1 sm:py-2 md:py-3">
-          <div className="flex lg:hidden items-center justify-between gap-2 mb-3 px-4">
+        <div className="max-w-8xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-0.5 sm:py-2 md:py-3">
+          <div className="flex lg:hidden items-center justify-between gap-2 mb-2 px-4">
             <SiteLogo settings={siteSettings} size="sm" />
             <div className="flex items-center gap-2">
               <CartButton />
@@ -107,7 +107,7 @@ function NavbarClient({
           </div>
 
           <motion.div
-            className="lg:hidden mb-3 space-y-3"
+            className="lg:hidden mb-2 space-y-2"
             initial={{ opacity: 0, y: -10 }}
             animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
             transition={isMounted ? { duration: 0.3 } : { duration: 0 }}
@@ -115,11 +115,11 @@ function NavbarClient({
             <div className="mx-4 flex items-center gap-2">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                className="p-1.5 text-white rounded-lg hover:bg-orange-700 transition-colors"
                 aria-label="Open menu"
                 aria-expanded={isMobileMenuOpen}
               >
-                <Menu className="w-6 h-6" />
+                <Menu className="w-5 h-5" />
               </button>
               <div className="flex-1">
                 <SearchBar />

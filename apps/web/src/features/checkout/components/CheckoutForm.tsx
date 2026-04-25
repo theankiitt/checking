@@ -126,6 +126,16 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           clearCart();
         }
 
+        const itemsList = itemsToCheckout
+          .map((item: any) => `${item.name} x${item.quantity || 1}`)
+          .join("\n");
+
+        const whatsappMessage = encodeURIComponent(
+          `Hi! I'm interested in getting a quote.\n\nItems:\n${itemsList}\n\nRequirement: ${data.requirement || "None"}`
+        );
+
+        window.open(`https://wa.me/9779814768889?text=${whatsappMessage}`, "_blank");
+
         router.push(`/checkout/success?orderId=${result.data?.orderId || ""}`);
       } else {
         const errorData = await response.json();
@@ -151,7 +161,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50 font-manrope">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Get Quote</h1>
           <Link

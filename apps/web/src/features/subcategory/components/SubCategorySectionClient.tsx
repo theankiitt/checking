@@ -38,7 +38,7 @@ export default function SubCategorySectionClient({
   if (!subCategories || subCategories.length === 0) {
     return (
       <section className="w-full bg-gray-100 py-6">
-        <div className={`max-w-[88rem] mx-auto px-4 ${manrope.className}`}>
+        <div className={`max-w-7xl mx-auto px-4 ${manrope.className}`}>
           <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 mb-8 `}>
             {title}
           </h2>
@@ -57,7 +57,7 @@ export default function SubCategorySectionClient({
 
   return (
     <section className="w-full bg-gray-100 py-6">
-      <div className="max-w-[88rem] mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <h2
           className={`text-2xl md:text-3xl tracking-tight font-bold text-black mb-4 ${manrope.className}`}
         >
@@ -78,7 +78,10 @@ export default function SubCategorySectionClient({
                     src={getFullImageUrl(category.image)}
                     alt={category.name}
                     fill
+                    sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 200px"
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    priority={index < 4}
+                    loading={index < 4 ? "eager" : "lazy"}
                   />
                 </div>
                 <h3 className="mt-2 text-center font-semibold text-gray-900 text-sm md:text-base truncate">

@@ -34,20 +34,6 @@ const SORT_OPTIONS = [
   { value: "name", label: "Name A-Z" },
 ];
 
-const AVAILABILITY_OPTIONS = [
-  { value: "all", label: "All Products" },
-  { value: "inStock", label: "In Stock" },
-  { value: "outOfStock", label: "Out of Stock" },
-];
-
-const PRICE_OPTIONS = [
-  { value: "all", label: "All Prices" },
-  { value: "0-100", label: "Under $100" },
-  { value: "100-500", label: "$100 - $500" },
-  { value: "500-1000", label: "$500 - $1000" },
-  { value: "1000-99999", label: "$1000+" },
-];
-
 export default function SubcategoryClient({
   subcategory,
   initialProducts,
@@ -61,22 +47,9 @@ export default function SubcategoryClient({
   const [showFilters, setShowFilters] = useState(false);
 
   const currentSort = searchParams?.get("sort") || "newest";
-  const currentAvailability = searchParams?.get("availability") || "all";
-  const currentPriceRange = searchParams?.get("priceRange") || "all";
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
-
-    if (currentAvailability === "inStock") {
-      result = result.filter((p) => (p.quantity ?? 0) > 0);
-    } else if (currentAvailability === "outOfStock") {
-      result = result.filter((p) => (p.quantity ?? 0) <= 0);
-    }
-
-    if (currentPriceRange !== "all") {
-      const [min, max] = currentPriceRange.split("-").map(Number);
-      result = result.filter((p) => p.price >= min && (max ? p.price <= max : true));
-    }
 
     if (currentSort === "priceLow") {
       result.sort((a, b) => a.price - b.price);
@@ -89,13 +62,15 @@ export default function SubcategoryClient({
     }
 
     return result;
-  }, [products, currentSort, currentAvailability, currentPriceRange]);
+  }, [products, currentSort]);
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
 
   const getImageUrl = (url: string | undefined) => {
     if (!url) return null;
-    if (url.startsWith("http")) return url;
+    if (url.startsWith("http")) {
+      return url.replace("localhost:5555", "localhost:4444");
+    }
     return `${API_BASE_URL}${url}`;
   };
 
@@ -113,11 +88,7 @@ export default function SubcategoryClient({
     router.push(window.location.pathname);
   };
 
-  const activeFilterCount = [
-    currentSort !== "newest",
-    currentAvailability !== "all",
-    currentPriceRange !== "all",
-  ].filter(Boolean).length;
+  const activeFilterCount = currentSort !== "newest" ? 1 : 0;
 
   useEffect(() => {
     if (showFilters) {
@@ -159,7 +130,7 @@ export default function SubcategoryClient({
 
   return (
     <div className="bg-[#F0F2F5] min-h-screen">
-      <div className="max-w-[88rem] mx-auto px-4 pt-8 pb-12">
+      <div className="max-w-7xl mx-auto px-4 pt-8 pb-12">
         <button
           onClick={() => router.back()}
           className="mb-4 flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"
@@ -272,24 +243,6 @@ export default function SubcategoryClient({
                   options={SORT_OPTIONS}
                   current={currentSort}
                   filterKey="sort"
-                />
-
-                <div className="border-t border-gray-100" />
-
-                <FilterSection
-                  title="Availability"
-                  options={AVAILABILITY_OPTIONS}
-                  current={currentAvailability}
-                  filterKey="availability"
-                />
-
-                <div className="border-t border-gray-100" />
-
-                <FilterSection
-                  title="Price Range"
-                  options={PRICE_OPTIONS}
-                  current={currentPriceRange}
-                  filterKey="priceRange"
                 />
               </div>
 

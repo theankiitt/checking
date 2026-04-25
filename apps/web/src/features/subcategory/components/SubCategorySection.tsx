@@ -20,7 +20,7 @@ interface SubCategorySectionProps {
 function SubCategorySkeleton({ title }: { title: string }) {
   return (
     <div className="w-full bg-white py-8 md:py-12">
-      <div className="max-w-[88rem] mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="h-10 w-64 bg-gray-200 animate-pulse rounded mb-2" />
         <div className="h-5 w-96 bg-gray-200 animate-pulse rounded mb-8" />
         <div className="grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-6 gap-4">

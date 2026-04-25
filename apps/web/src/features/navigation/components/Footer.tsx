@@ -60,6 +60,8 @@ function SocialLinks({ links }: { links: SocialLink[] }) {
 }
 
 function ContactInfo({ settings }: { settings: SiteSettings }) {
+  const phoneNumber = "+977 981 476 8889";
+
   return (
     <div className="space-y-4">
       <h3 className={`text-white font-bold text-xl ${manrope.className}`}>
@@ -69,10 +71,10 @@ function ContactInfo({ settings }: { settings: SiteSettings }) {
         <li className="flex items-center gap-3 ">
           <Phone className="w-5 h-5 text-gray-200 flex-shrink-0" />
           <a
-            href={`tel:${settings.phone?.replace(/\s/g, "")}`}
+            href={`tel:${phoneNumber.replace(/\s/g, "")}`}
             className="text-md text-gray-200 hover:text-white transition-colors"
           >
-            {settings.phone}
+            {phoneNumber}
           </a>
         </li>
         <li className="flex items-center gap-3">
@@ -161,7 +163,7 @@ export default function Footer({ siteSettings }: FooterProps) {
       siteLogo: "/main.png",
       siteFavicon: "/favicon.ico",
       email: "gharsamma6@gmail.com",
-      phone: "+977 123 456 7890",
+      phone: "+977 981 476 8889",
       address: "Kathmandu, Nepal",
       city: "",
       country: "Nepal",

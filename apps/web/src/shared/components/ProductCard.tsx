@@ -13,6 +13,8 @@ interface ProductCardProps {
   onAddToCart?: (product: Product) => void;
   onToggleWishlist?: (product: Product) => void;
   priority?: boolean;
+  categorySlug?: string;
+  subcategorySlug?: string;
 }
 
 const ProductCard = memo(function ProductCard({
@@ -21,15 +23,19 @@ const ProductCard = memo(function ProductCard({
   onAddToCart,
   onToggleWishlist,
   priority = false,
+  categorySlug,
+  subcategorySlug,
 }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5555";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
 
   const getImageUrl = (url: string | undefined) => {
     if (!url) return null;
-    if (url.startsWith("http")) return url;
+    if (url.startsWith("http")) {
+      return url.replace("localhost:5555", "localhost:4444");
+    }
     return `${API_BASE_URL}${url}`;
   };
 
@@ -37,9 +43,11 @@ const ProductCard = memo(function ProductCard({
     ? calculateDiscountPercentage(product.comparePrice, product.price)
     : 0;
 
-  const productHref = product.category?.slug
-    ? `/products/${product.category.slug}/${product.slug}`
-    : `/products/${product.slug}`;
+  const productHref = categorySlug && subcategorySlug
+    ? `/products/${categorySlug}/${subcategorySlug}/${product.slug}`
+    : product.category?.slug
+      ? `/products/${product.category.slug}/${product.slug}`
+      : `/products/${product.slug}`;
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();

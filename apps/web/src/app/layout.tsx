@@ -113,7 +113,7 @@ export default async function RootLayout({
           <CookieConsent />
           {showNavbar && <Navbar />}
 
-          <div className="min-h-screen flex flex-col pt-[120px] md:pt-[160px]">
+          <div className="min-h-screen flex flex-col pt-[80px] md:pt-[100px]">
             <main className="flex-1 pb-20 md:pb-0">
               <Suspense fallback={null}>{children}</Suspense>
             </main>

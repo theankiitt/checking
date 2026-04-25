@@ -10,51 +10,51 @@ import toast from "react-hot-toast";
 import { manrope } from "@/app/fonts";
 
 const COUNTRIES = [
-  { code: "NP", dial: "+977", flag: "🇳" },
-  { code: "US", dial: "+1", flag: "🇺" },
+  { code: "NP", dial: "+977", flag: "🇳🇵" },
+  { code: "US", dial: "+1", flag: "🇺🇸" },
   { code: "GB", dial: "+44", flag: "🇬🇧" },
   { code: "AU", dial: "+61", flag: "🇦🇺" },
   { code: "CA", dial: "+1", flag: "🇨🇦" },
-  { code: "IN", dial: "+91", flag: "🇮" },
+  { code: "IN", dial: "+91", flag: "🇮🇳" },
   { code: "AE", dial: "+971", flag: "🇦🇪" },
   { code: "JP", dial: "+81", flag: "🇯🇵" },
-  { code: "DE", dial: "+49", flag: "🇩" },
+  { code: "DE", dial: "+49", flag: "🇩🇪" },
   { code: "FR", dial: "+33", flag: "🇫🇷" },
   { code: "IT", dial: "+39", flag: "🇮🇹" },
   { code: "ES", dial: "+34", flag: "🇪🇸" },
-  { code: "BR", dial: "+55", flag: "🇧" },
+  { code: "BR", dial: "+55", flag: "🇧🇷" },
   { code: "MX", dial: "+52", flag: "🇲🇽" },
   { code: "KR", dial: "+82", flag: "🇰🇷" },
   { code: "CN", dial: "+86", flag: "🇨🇳" },
-  { code: "SG", dial: "+65", flag: "🇸" },
+  { code: "SG", dial: "+65", flag: "🇸🇬" },
   { code: "MY", dial: "+60", flag: "🇲🇾" },
   { code: "TH", dial: "+66", flag: "🇹🇭" },
   { code: "NZ", dial: "+64", flag: "🇳🇿" },
-  { code: "ZA", dial: "+27", flag: "🇿" },
+  { code: "ZA", dial: "+27", flag: "🇿🇦" },
   { code: "SA", dial: "+966", flag: "🇸🇦" },
-  { code: "QA", dial: "+974", flag: "🇶" },
+  { code: "QA", dial: "+974", flag: "🇶🇦" },
   { code: "KW", dial: "+965", flag: "🇰🇼" },
-  { code: "BH", dial: "+973", flag: "🇧" },
+  { code: "BH", dial: "+973", flag: "🇧🇭" },
   { code: "OM", dial: "+968", flag: "🇴🇲" },
   { code: "BD", dial: "+880", flag: "🇧🇩" },
-  { code: "PK", dial: "+92", flag: "🇵" },
+  { code: "PK", dial: "+92", flag: "🇵🇰" },
   { code: "LK", dial: "+94", flag: "🇱🇰" },
   { code: "PH", dial: "+63", flag: "🇵🇭" },
-  { code: "ID", dial: "+62", flag: "🇮" },
+  { code: "ID", dial: "+62", flag: "🇮🇩" },
   { code: "VN", dial: "+84", flag: "🇻🇳" },
-  { code: "EG", dial: "+20", flag: "🇪" },
+  { code: "EG", dial: "+20", flag: "🇪🇬" },
   { code: "NG", dial: "+234", flag: "🇳🇬" },
   { code: "KE", dial: "+254", flag: "🇰🇪" },
   { code: "GH", dial: "+233", flag: "🇬🇭" },
   { code: "RU", dial: "+7", flag: "🇷🇺" },
-  { code: "TR", dial: "+90", flag: "🇹" },
+  { code: "TR", dial: "+90", flag: "🇹🇷" },
   { code: "NL", dial: "+31", flag: "🇳🇱" },
   { code: "SE", dial: "+46", flag: "🇸🇪" },
   { code: "NO", dial: "+47", flag: "🇳🇴" },
   { code: "DK", dial: "+45", flag: "🇩🇰" },
   { code: "FI", dial: "+358", flag: "🇫🇮" },
   { code: "CH", dial: "+41", flag: "🇨🇭" },
-  { code: "AT", dial: "+43", flag: "🇦" },
+  { code: "AT", dial: "+43", flag: "🇦🇹" },
   { code: "BE", dial: "+32", flag: "🇧🇪" },
   { code: "PT", dial: "+351", flag: "🇵🇹" },
   { code: "IE", dial: "+353", flag: "🇮🇪" },
@@ -65,7 +65,7 @@ const COUNTRIES = [
   { code: "GR", dial: "+30", flag: "🇬🇷" },
   { code: "IL", dial: "+972", flag: "🇮🇱" },
   { code: "AR", dial: "+54", flag: "🇦🇷" },
-  { code: "CL", dial: "+56", flag: "🇨" },
+  { code: "CL", dial: "+56", flag: "🇨🇱" },
   { code: "CO", dial: "+57", flag: "🇨🇴" },
   { code: "PE", dial: "+51", flag: "🇵🇪" },
   { code: "VE", dial: "+58", flag: "🇻🇪" },
@@ -192,7 +192,7 @@ export default function CustomOrderSection() {
                     <button
                       type="button"
                       onClick={() => setShowDropdown(!showDropdown)}
-                      className="h-12 px-3 rounded-xl bg-gray-100 border-2 border-gray-200 focus:border-green-500 focus:outline-none transition-colors flex items-center gap-1.5 hover:bg-gray-200"
+                      className="h-12 px-3 rounded-xl bg-gray-100 border-2 border-gray-200 focus:border-[#EB6426] focus:outline-none transition-colors flex items-center gap-1.5 hover:bg-gray-200"
                     >
                       <span className="text-lg">{selectedCountry.flag}</span>
                       <span className="text-sm font-medium text-gray-700">{selectedCountry.dial}</span>
@@ -209,7 +209,7 @@ export default function CustomOrderSection() {
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                               placeholder="Search code..."
-                              className="w-full px-3 py-2 text-sm bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500"
+                              className="w-full px-3 py-2 text-sm bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-[#EB6426]"
                               autoFocus
                               onClick={(e) => e.stopPropagation()}
                             />
@@ -246,7 +246,7 @@ export default function CustomOrderSection() {
                     {...register("phoneNumber")}
                     placeholder="98XXXXXXXX"
                     className={`flex-1 h-12 px-4 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 border-2 focus:outline-none transition-colors ${
-                      errors.phoneNumber ? "border-red-300 focus:border-red-500" : "border-gray-200 focus:border-green-500"
+                      errors.phoneNumber ? "border-red-300 focus:border-red-500" : "border-gray-200 focus:border-[#EB6426]"
                     }`}
                   />
                 </div>
@@ -261,7 +261,7 @@ export default function CustomOrderSection() {
                   {...register("description")}
                   placeholder="Describe what you're looking for..."
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 border-2 border-gray-200 focus:border-green-500 focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 text-gray-900 placeholder-gray-400 border-2 border-gray-200 focus:border-[#EB6426] focus:outline-none transition-colors resize-none"
                 />
                 {errors.description && (
                   <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.description.message}</p>

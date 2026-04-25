@@ -24,7 +24,7 @@ interface Product {
 function SnacksSkeleton() {
   return (
     <div className="w-full bg-gray-100 py-8 md:py-12">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <h2 className="text-2xl md:text-3xl tracking-tight font-bold text-black mb-4">
           Foods
         </h2>

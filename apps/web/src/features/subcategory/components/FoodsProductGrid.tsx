@@ -41,7 +41,7 @@ const getFullImageUrl = (imagePath: string): string => {
 export default function FoodsProductGrid({ products }: FoodsProductGridProps) {
   return (
     <section className="w-full bg-gray-100 py-6 md:py-8">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2
@@ -75,7 +75,10 @@ export default function FoodsProductGrid({ products }: FoodsProductGridProps) {
                       src={getFullImageUrl(product.image || product.images?.[0] || "")}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 640px) 50vw, 192px"
                       className="object-contain group-hover:scale-105 transition-transform duration-500"
+                      priority={index < 4}
+                      loading={index < 4 ? "eager" : "lazy"}
                     />
                   </div>
                 </div>

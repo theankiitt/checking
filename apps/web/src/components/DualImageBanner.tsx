@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function DualImageBanner() {
   return (
     <section className="w-full py-6 md:py-8">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="relative aspect-[16/9] rounded-xl overflow-hidden group">
             <Image
@@ -23,7 +23,6 @@ export default function DualImageBanner() {
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
-              priority
             />
           </div>
         </div>

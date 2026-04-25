@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import JewelryProductGrid from "./JewelryProductGrid";
+import { manrope } from "@/app/fonts";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4444";
@@ -24,11 +25,11 @@ interface Product {
 function JewelrySkeleton() {
   return (
     <div className="w-full bg-gray-100 py-6 md:py-8">
-      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl md:text-3xl tracking-tight font-bold text-black">
-              Jewelry Collection
+            <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 mb-2 ${manrope.className}`}>
+              Jewelry 
             </h2>
             <p className="text-gray-500 text-sm mt-1">Traditional Nepali Jewelry</p>
           </div>
@@ -88,7 +89,23 @@ export default async function JewelrySection() {
   const products = await getJewelryProducts();
 
   if (products.length === 0) {
-    return <JewelrySkeleton />;
+    return (
+      <div className="w-full bg-gray-100 py-6 md:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className={`text-2xl md:text-3xl font-bold text-gray-900 mb-2 ${manrope.className}`}>
+                Jewelry 
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">Traditional Nepali Jewelry</p>
+            </div>
+          </div>
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No product available</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -67,10 +67,12 @@ const getFullImageUrl = (imagePath: string): string => {
 
 interface CategoryCardProps {
   category: Category;
+  priority?: boolean;
 }
 
 const CategoryCard = memo(function CategoryCard({
   category,
+  priority = false,
 }: CategoryCardProps) {
   const firstChild = category.children?.[0];
   const parentImage = category.image;
@@ -91,6 +93,7 @@ const CategoryCard = memo(function CategoryCard({
               alt={category.name}
               fill
               className="object-contain group-hover:scale-105 transition-transform duration-500"
+              priority={priority}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -126,7 +129,7 @@ export default memo(function CategorySectionClient({
 
   return (
     <div
-      className="container max-w-[88rem] mx-auto px-4 mt-10 md:mt-12"
+      className="container max-w-7xl mx-auto px-4 mt-10 md:mt-12"
       role="region"
       aria-label="Categories"
     >
@@ -136,12 +139,12 @@ export default memo(function CategorySectionClient({
       />
 
       <div className="flex gap-4 lg:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <div
             key={category.id}
             className="flex-shrink-0 w-36 lg:w-48 snap-start"
           >
-            <CategoryCard category={category} />
+            <CategoryCard category={category} priority={index < 4} />
           </div>
         ))}
       </div>

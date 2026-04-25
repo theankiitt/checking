@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: { params: Promise<{ catego
 function ProductDetailSkeleton() {
   return (
     <div className="bg-[#F0F2F5] min-h-screen">
-      <div className="max-w-[88rem] mx-auto px-4 pt-8 pb-12">
+      <div className="max-w-7xl mx-auto px-4 pt-8 pb-12">
         <div className="animate-pulse">
           <div className="h-12 bg-gray-300 rounded w-48 mb-8"></div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -10,7 +10,7 @@ COPY packages/typescript-config/package.json ./packages/typescript-config/packag
 RUN pnpm install --shamefully-hoist --frozen-lockfile
 
 FROM base AS builder
-ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_API_BASE_URL
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
@@ -18,7 +18,7 @@ COPY apps/web ./apps/web/
 COPY packages/typescript-config ./packages/typescript-config/
 
 WORKDIR /app
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 RUN pnpm --filter web run build
 
 FROM base AS runner
